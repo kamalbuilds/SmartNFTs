@@ -10,7 +10,7 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import { NFT, ThirdwebSDK } from "@thirdweb-dev/sdk";
 import {
   activeChain,
-  nftDropAddress,
+  loyaltyCardAddress,
   TWApiKey,
 } from "../../../const/constants";
 import styles from "../../../styles/Token.module.css";
@@ -18,6 +18,7 @@ import { Toaster } from "react-hot-toast";
 import { Signer } from "ethers";
 import newSmartWallet from "../../../components/SmartWallet/SmartWallet";
 import SmartWalletConnected from "../../../components/SmartWallet/smartConnected";
+import Link from "next/link";
 
 type Props = {
   nft: NFT;
@@ -36,24 +37,46 @@ export default function TokenPage({ nft, contractMetadata }: Props) {
 
   // create a smart wallet for the NFT
   useEffect(() => {
+    console.count();
     const createSmartWallet = async (nft: NFT) => {
-      if (nft && smartWalletAddress == null && address && wallet) {
+      console.log("NFT if statement", nft, smartWalletAddress, address, wallet);
+
+      if (wallet) {
         const smartWallet = newSmartWallet(nft);
-        console.log("personal wallet", address);
         await smartWallet.connect({
           personalWallet: wallet,
         });
-        setSigner(await smartWallet.getSigner());
-        console.log("signer", signer);
-        setSmartWalletAddress(await smartWallet.getAddress());
-        console.log("smart wallet address", await smartWallet.getAddress());
-        return smartWallet;
-      } else {
-        console.log("smart wallet not created");
+
+        console.log("Smart wallet", smartWallet);
+
+        const isDeployed = await smartWallet.isDeployed();
+        console.log("Is Deployed? ???", isDeployed);
+
+        if (!isDeployed) {
+          console.log("Smart Account is deploying >>>>>>.....");
+          try {
+            const tx = await smartWallet.deploy();
+            console.log("Smart Account is deploying.....", tx);
+          } catch (error) {
+            console.log("Error in deploying", error)
+          }
+        }
+
+        const smartWalletSigner = await smartWallet.getSigner();
+        console.log("Smart wallet signer", smartWalletSigner);
+        setSigner(smartWalletSigner);
+
+        const ownerAddress = await smartWallet.getAddress();
+        console.log("Smart wallet ownerAddress", ownerAddress);
+        setSmartWalletAddress(ownerAddress);
+
+
+
       }
     };
     createSmartWallet(nft);
-  }, [nft, smartWalletAddress, address, wallet]);
+  }, [nft, address, wallet]);
+
 
   return (
     <>
@@ -80,7 +103,12 @@ export default function TokenPage({ nft, contractMetadata }: Props) {
             <h1 className={styles.title}>{nft.metadata.name}</h1>
             <p className={styles.collectionName}>Token ID #{nft.metadata.id}</p>
             {smartWalletAddress ? (
-              <SmartWalletConnected signer={signer} />
+              <>
+              <SmartWalletConnected signer={signer} scaaddress={smartWalletAddress} />
+              <Link href={`/u/${smartWalletAddress}`}>
+                Check profile
+              </Link>
+              </>
             ) : (
               <div className={styles.btnContainer}>
                 <p>Loading...</p>
@@ -100,7 +128,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     secretKey: process.env.TW_SECRET_KEY,
   });
 
-  const contract = await sdk.getContract(nftDropAddress);
+  const contract = await sdk.getContract(loyaltyCardAddress);
 
   const nft = await contract.erc721.get(tokenId);
   console.log(nft.metadata.uri, "Here!!!");
@@ -109,7 +137,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   try {
     contractMetadata = await contract.metadata.get();
-  } catch (e) {}
+  } catch (e) { }
 
   return {
     props: {
@@ -125,14 +153,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
     secretKey: process.env.TW_SECRET_KEY,
   });
 
-  const contract = await sdk.getContract(nftDropAddress);
+  const contract = await sdk.getContract(loyaltyCardAddress);
 
   const nfts = await contract.erc721.getAll();
 
   const paths = nfts.map((nft) => {
     return {
       params: {
-        contractAddress: nftDropAddress,
+        contractAddress: loyaltyCardAddress,
         tokenId: nft.metadata.id,
       },
     };
