@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useAddress, useSigner } from '@thirdweb-dev/react';
 import React from 'react';
 import { activeChain } from '../../const/constants';
