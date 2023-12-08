@@ -6,23 +6,27 @@ import {
 } from "@thirdweb-dev/react";
 import React from "react";
 import { activeChain, tokenAddress, TWApiKey } from "../../const/constants";
-import { Signer } from "ethers";    
+import { Signer } from "ethers";
 import style from "../../styles/Token.module.css";
 import toast from "react-hot-toast";
 import toastStyle from "../../util/toastConfig";
+import Swap from "../SwapComponent/Swap";
 interface ConnectedProps {
   signer: Signer | undefined;
+  scaaddress: string | undefined;
 }
 
 // ThirdwebSDKProvider is a wrapper component that provides the smart wallet signer and active chain to the Thirdweb SDK.
-const SmartWalletConnected: React.FC<ConnectedProps> = ({ signer }) => {
+const SmartWalletConnected: React.FC<ConnectedProps> = ({ signer, scaaddress }) => {
   return (
     <ThirdwebSDKProvider
       signer={signer}
       activeChain={activeChain}
       clientId={TWApiKey}
     >
+      <h2>This is Your Token Bound Account! {scaaddress}</h2>
       <ClaimTokens />
+      {signer && <Swap />}
     </ThirdwebSDKProvider>
   );
 };
@@ -35,7 +39,6 @@ const ClaimTokens = () => {
 
   return (
     <div className={style.walletContainer}>
-      <h2>This is Your Token Bound Smart Wallet!</h2>
       {address ? (
         loadingBalance ? (
           <h2>Loading Balance...</h2>

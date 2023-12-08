@@ -1,7 +1,7 @@
 import type { NFT as NFTType } from "@thirdweb-dev/sdk";
 import Link from "next/link";
 import React from "react";
-import { nftDropAddress } from "../../const/constants";
+import { loyaltyCardAddress } from "../../const/constants";
 import Skeleton from "../Skeleton/Skeleton";
 import NFT from "./NFT";
 import styles from "../../styles/Main.module.css";
@@ -30,7 +30,7 @@ export default function NFTGrid({
       ) : nfts && nfts.length > 0 ? (
         nfts.map((nft) => (
           <Link
-            href={`/token/${nftDropAddress}/${nft.metadata.id}`}
+            href={`/token/${loyaltyCardAddress}/${nft.metadata.id}`}
             key={nft.metadata.id}
             className={styles.nftContainer}
           >

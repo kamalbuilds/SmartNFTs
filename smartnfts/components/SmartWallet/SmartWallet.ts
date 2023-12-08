@@ -1,10 +1,12 @@
+// ERC6551 Smart Wallet
 import { ethers } from "ethers";
 import { SmartWallet } from "@thirdweb-dev/wallets";
+// factory address and implementation address ERC-6551
 import {
   TWApiKey,
   factoryAddress,
   activeChain,
-  nftDropAddress,
+  loyaltyCardAddress,
   implementation,
 } from "../../const/constants";
 import { SmartContract, NFT } from "@thirdweb-dev/sdk";
@@ -27,7 +29,7 @@ export default function newSmartWallet(token: NFT) {
         const account = factory.prepare("createAccount", [
           implementation,
           activeChain.chainId,
-          nftDropAddress,
+          loyaltyCardAddress,
           token.metadata.id,
           0,
           ethers.utils.toUtf8Bytes("")
@@ -42,7 +44,7 @@ export default function newSmartWallet(token: NFT) {
         return factory.call("account", [
           implementation,
           activeChain.chainId,
-          nftDropAddress,
+          loyaltyCardAddress,
           token.metadata.id,
           0
         ]);
