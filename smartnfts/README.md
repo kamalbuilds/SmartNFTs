@@ -1,39 +1,69 @@
-## Token Bound Account Front End Template
+# TBA with Personalised SmartNFTs for Users
 
-Create a front end for users to browse their owned NFTs & create token-bound smart wallets associated with these NFTs.
-Allow users to claim tokens to their token-bound wallets.
-## Using this template
+Own Brand NFTs which contain your assets along with a Loyalty NFT. 
+Take action like Investing in Pools. Connect to Ethereum. All as your NFT.
 
-1. Deploy a Token Bound Account & Token Bound Account factory contract
-2. Clone this repository using the thirdweb [CLI](https://portal.thirdweb.com/cli)
-3. Create a thirdweb API key
-4. Paste your details into `const/constants.ts`
+TBA - https://mumbai.polygonscan.com/address/0xb983f7e345fe5493d8abb63ae1ab52ec372b4f19
 
-### 1. Deploy Token Bound Account Implementation & Factory
+Loyalty Membership NFTs 1 of each brand - https://mumbai.polygonscan.com/address/0xE1822311D285d78EE98f5bD0f2edcF56fb7F1D29
 
-- Deploy a [Token Bound Account Factory](https://github.com/thirdweb-example/token-bound-account/blob/main/src/TokenBoundAccountFactory.sol): this enables the programmatic distribution of token-bound accounts for users. 
-- Deploy a [Token Bound Account](https://github.com/thirdweb-example/token-bound-account/blob/main/src/TokenBoundAccount.sol) implementation contract: This is the implementation contract in which your factory will deploy instances.
-### Cloning this repository
+Brand ProductNFT Collection - 0xBd491b4321DbE318522Ab3266590883c9F055200
 
-Run the following command from your terminal:
+![ERC-6551 Structure](/public/image.png)
+![Alt text](public/registery.png)
 
-```bash
-npx thirdweb create --template token-bound-account-app
-```
+Features
 
-_Note: This requires [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) and [Git](https://git-scm.com/downloads). [Yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable) is also recommended._
+Brands can issue NFTs on their items with a QR Code and now users would be able to pay and purchase those items.
 
-## Learn More
+Our main usecase- Easier onboarding for new users. Imagine buying some merch from a shop and getting an associated NFT with it. Any future rewards or benefits can be airdropped straight into the wallet associated with that NFT. To self-custody, user can just move the top-level NFT from the merch shop's website into a wallet under their control, and all contained assets move with it.
 
-To learn more about thirdweb and Next.js, take a look at the following resources:
+Integrations aimed
 
-- [thirdweb React Documentation](https://docs.thirdweb.com/react) - learn about our React SDK.
-- [thirdweb TypeScript Documentation](https://docs.thirdweb.com/typescript) - learn about our JavaScript/TypeScript SDK.
-- [thirdweb Portal](https://docs.thirdweb.com) - check our guides and development resources.
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+1. 1inch Fusion Swaps via Token Bound Accounts
 
-You can check out [the thirdweb GitHub organization](https://github.com/thirdweb-dev) - your feedback and contributions are welcome!
+Execute Swaps using Fusion SDK and API and then deposit in UniswapV3 Pools.
 
-## Join our Discord!
+2. Airstack 
+For querying ERC-6551 related things
 
-For any questions or suggestions, join our discord at [https://discord.gg/thirdweb](https://discord.gg/thirdweb).
+3. Push for Chat 
+
+3. XDC and Submit to Alliance for Best Startup Idea
+
+4. Chainlink 
+
+5. Ethereum Foundation - Best use of Anon Aadhaar SDK   
+Authorised Indian citizens to buy the NFTs
+
+6. Deploy on Scroll, Mantle , Celo and PolygonZKevm- Defi App , Arbitrium
+
+## AA related
+
+1. Best use of Account Abstraction and Base Paymaster ⸺ $4,000
+
+User can send transaction by paying USDC as gas fee
+
+Utilize a smart contract wallet to further improve UX
+Utilize the new Base Paymaster to allow for free end user transactions
+
+User can send transaction by paying USDC as gas fee
+
+2. Best use of OKX  Best use of Account Abstraction
+
+Pages
+
+npx prisma db push
+
+mongodb+srv://kamal:mMtmf04G6O1DHNjZ@cluster0.btoeo63.mongodb.net/qrproductnft?retryWrites=true&w=majority
+  
+
+docker run -e ENCRYPTION_PASSWORD="AdYrF7GIz_RPy9r8YSXPbOwToDcmwIY28-J9ubXRuNsYGEtQ3nwH42NOzRup7P-1iQg1AM6hB8wkxsrMT0ujkQ" -e THIRDWEB_API_SECRET_KEY="AdYrF7GIz_RPy9r8YSXPbOwToDcmwIY28-J9ubXRuNsYGEtQ3nwH42NOzRup7P-1iQg1AM6hB8wkxsrMT0ujkQ" -e ADMIN_WALLET_ADDRESS="0x0439427C42a099E7E362D86e2Bbe1eA27300f6Cb" -e POSTGRES_CONNECTION_URL="postgresql://postgres:postgres@host.docker.internal:5432/postgres?sslmode=disable" -e ENABLE_HTTPS=true -p 3005:3005 --pull=always --cpus="0.5" thirdweb/engine:latest
+
+
+https://cloud.mongodb.com/v2/656b285b11cdd7317b3e9232#/metrics/replicaSet/656b288a21997a686ccc09db/explorer/qrproductnft/NFT/find
+
+/claim?id=clpo508e80000iw3dysdf4dbj
+
+
+Building onchain quest like buy 3 products in a week , and when user completes a quest his loyalty nft points get automatically updated using chainlink automation.
