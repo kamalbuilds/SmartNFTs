@@ -126,7 +126,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         ]}
       >
         <SmartAccountContextProvider>
-          <ChakraProvider>
+          <ChakraProvider theme={DarkMode}>
             <AirstackProvider apiKey={process.env.NEXT_PUBLIC_APP_AIRSTACK_API_KEY || ""}>
               <AnonAadhaarProvider _appId={app_id}>
                 <>

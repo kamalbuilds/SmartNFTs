@@ -12,7 +12,7 @@ export default async function updateNFT(
             process.env.NEXT_PUBLIC_PRIVATE_KEY || '',
             "mumbai",
             {
-                clientId: process.env.NEXT_PUBLIC_TEMPLATE_CLIENT_ID || '',
+                clientId: process.env.NEXT_PUBLIC_APP_TEMPLATE_CLIENT_ID || '',
             }
         );
 

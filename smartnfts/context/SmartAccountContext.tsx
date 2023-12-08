@@ -1,5 +1,5 @@
 import { createContext, useMemo } from "react";
-import { Hex, concat, createClient, createPublicClient, encodeFunctionData, http, parseEther } from 'viem'
+import { Hex, concat, createClient, createPublicClient, encodeFunctionData, hashTypedData, http, parseEther, toBytes } from 'viem'
 import { BASE_GOERLI_PAYMASTER_URL } from "../lib/constants";
 import { baseGoerli, polygonMumbai } from "viem/chains";
 import { privateKeyToSafeSmartAccount, signerToSafeSmartAccount } from "permissionless/accounts"
@@ -8,18 +8,41 @@ import { generatePrivateKey, privateKeyToAccount, toAccount } from "viem/account
 import { pimlicoBundlerActions, pimlicoPaymasterActions } from "permissionless/actions/pimlico";
 import { UserOperation, bundlerActions, createSmartAccountClient, getSenderAddress } from "permissionless";
 import NFTAbi from "../const/NFTAbi.json";
+import { ThirdwebSDK } from "@thirdweb-dev/react";
 
 export const SmartAccountContext = createContext({})
 
-const SmartAccountContextProvider = ({ children }: any) => {
+const adjustVInSignature = (
+    signingMethod: "eth_sign" | "eth_signTypedData",
+    signature: string
+): Hex => {
+    const ETHEREUM_V_VALUES = [0, 1, 27, 28]
+    const MIN_VALID_V_VALUE_FOR_SAFE_ECDSA = 27
+    let signatureV = parseInt(signature.slice(-2), 16)
+    if (!ETHEREUM_V_VALUES.includes(signatureV)) {
+        throw new Error("Invalid signature")
+    }
+    if (signingMethod === "eth_sign") {
+        if (signatureV < MIN_VALID_V_VALUE_FOR_SAFE_ECDSA) {
+            signatureV += MIN_VALID_V_VALUE_FOR_SAFE_ECDSA
+        }
+        signatureV += 4
+    }
+    if (signingMethod === "eth_signTypedData") {
+        if (signatureV < MIN_VALID_V_VALUE_FOR_SAFE_ECDSA) {
+            signatureV += MIN_VALID_V_VALUE_FOR_SAFE_ECDSA
+        }
+    }
+    return (signature.slice(0, -2) + signatureV.toString(16)) as Hex
+}
 
+const SmartAccountContextProvider = ({ children }: any) => {
     const thirdwebSigner = useSigner();
     const address = '0x0439427C42a099E7E362D86e2Bbe1eA27300f6Cb';
+    console.log("thirdwebSigner", thirdwebSigner)
 
     const ownerPrivateKey = `0xec163bb6c451bd478b537fd49c0258b4fd72fe52d67a1e63452e66a68a3b439a`;
     const signer = privateKeyToAccount(ownerPrivateKey)
-
-
 
     const signer_res = toAccount(address);
 
@@ -30,8 +53,6 @@ const SmartAccountContextProvider = ({ children }: any) => {
         transport: http("https://polygon-mumbai.g.alchemy.com/v2/eoLi0hkG_t_JgHwf3wWhw62Gx0OnF9yf"),
         chain: polygonMumbai
     })
-
-
 
 
     const ENTRY_POINT_ADDRESS = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
@@ -62,9 +83,42 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
         console.log("Signer", signer, thirdwebSigner);
 
+            const sdk = ThirdwebSDK.fromSigner(thirdwebSigner, 80001 , {
+        clientId: process.env.NEXT_PUBLIC_APP_TEMPLATE_CLIENT_ID, // Use client id if using on the client side, get it from dashboard settings
+// Use secret key if using on the server, get it from dashboard settings. Do NOT expose your secret key to the client-side
+      });
+        const customSigner = {
+            address : await thirdwebSigner?.getAddress() as Hex,
+            publicKey: "0x00" as Hex,
+            source: 'custom',
+            type: 'local' as 'local',
+            signMessage: (args: {message: any}) => {
+                console.log("here", args);
+                return thirdwebSigner?.signMessage(args.message)
+            },
+            signTypedData: async (typedData: any) => {
+                console.log("here", typedData);
+
+                // return sdk.wallet.signTypedData();
+                return sdk.wallet.signTypedData(
+                    typedData.domain,
+                    typedData.types,
+                    typedData.message,
+                  );
+
+                // const messageHash: string = hashTypedData(typedData) || ""
+
+                // return adjustVInSignature(
+                //     "eth_sign",
+                //     (await thirdwebSigner?.signMessage(messageHash)) || ""
+                // )
+
+            }
+        }
+
         const res = await signerToSafeSmartAccount(publicClient, {
             entryPoint: ENTRY_POINT_ADDRESS,
-            signer: signer,
+            signer: customSigner,
             safeVersion: "1.4.1",
             saltNonce: 100n,
         })
@@ -129,7 +183,6 @@ const SmartAccountContextProvider = ({ children }: any) => {
         console.log("Public Client", publicClient, paymasterClient);
 
         const to = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
-        const value = 0n
         const data = "0x68656c6c6f"
 
         const metadata = {
@@ -143,6 +196,13 @@ const SmartAccountContextProvider = ({ children }: any) => {
             args: [address, metadata],
             functionName: "mintTo"
         })
+
+        const resultTx = await smartAccountClient.sendTransaction({
+            to: to,
+            data: callData
+        })
+
+        console.log(resultTx);
 
         // const callData = encodeFunctionData({
         //     abi: [{
@@ -159,50 +219,42 @@ const SmartAccountContextProvider = ({ children }: any) => {
         //     args: [to, value, data]
         // })
 
-        console.log("Generated callData:", callData)
+        // console.log("Generated callData:", callData)
 
-        const gasPrice = await bundlerClient.getUserOperationGasPrice()
-        console.log("Gas price", gasPrice);
+        // const gasPrice = await bundlerClient.getUserOperationGasPrice()
+        // console.log("Gas price", gasPrice);
 
-        const userOperation = {
-            sender: accountAddress,
-            nonce,
-            initCode,
-            callData,
-            maxFeePerGas: gasPrice.fast.maxFeePerGas,
-            maxPriorityFeePerGas: gasPrice.fast.maxPriorityFeePerGas,
-            // dummy signature, needs to be there so the SimpleAccount doesn't immediately revert because of invalid signature length
-            signature: "0xa15569dd8f8324dbeabf8073fdec36d4b754f53ce5901e283c6de79af177dc94557fa3c9922cd7af2a96ca94402d35c39f266925ee6407aeb32b31d76978d4ba1c" as Hex
-        }
-
-        console.log("userOperation", userOperation)
-
-        const sponsorUserOperationResult = await paymasterClient.sponsorUserOperation({
-            userOperation,
-            entryPoint: ENTRY_POINT_ADDRESS
-        })
-
-        const sponsoredUserOperation: UserOperation = {
-            ...userOperation,
-            preVerificationGas: sponsorUserOperationResult.preVerificationGas,
-            verificationGasLimit: sponsorUserOperationResult.verificationGasLimit,
-            callGasLimit: sponsorUserOperationResult.callGasLimit,
-            paymasterAndData: sponsorUserOperationResult.paymasterAndData
-        }
-
-        console.log("Received paymaster sponsor result:", sponsorUserOperationResult)
+        // const userOperation = {
+        //     sender: accountAddress,
+        //     nonce,
+        //     initCode,
+        //     callData,
+        //     maxFeePerGas: gasPrice.fast.maxFeePerGas,
+        //     maxPriorityFeePerGas: gasPrice.fast.maxPriorityFeePerGas,
+        //     // dummy signature, needs to be there so the SimpleAccount doesn't immediately revert because of invalid signature length
+        //     signature: "0xa15569dd8f8324dbeabf8073fdec36d4b754f53ce5901e283c6de79af177dc94557fa3c9922cd7af2a96ca94402d35c39f266925ee6407aeb32b31d76978d4ba1c" as Hex
+        // }
 
 
+        // console.log("userOperation", userOperation)
+
+        // const sponsorUserOperationResult = await paymasterClient.sponsorUserOperation({
+        //     userOperation,
+        //     entryPoint: ENTRY_POINT_ADDRESS
+        // })
+
+        // const sponsoredUserOperation: UserOperation = {
+        //     ...userOperation,
+        //     preVerificationGas: sponsorUserOperationResult.preVerificationGas,
+        //     verificationGasLimit: sponsorUserOperationResult.verificationGasLimit,
+        //     callGasLimit: sponsorUserOperationResult.callGasLimit,
+        //     paymasterAndData: sponsorUserOperationResult.paymasterAndData
+        // }
+
+        // console.log("Received paymaster sponsor result:", sponsorUserOperationResult)
 
 
-
-
-
-
-
-
-
-
+    
 
     }
 

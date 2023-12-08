@@ -5,7 +5,7 @@ export const factoryAddress: string = '0x02101dfB77FDE026414827Fdc604ddAF224F092
 export const implementation: string = '0xB983F7e345Fe5493d8ABb63aE1aB52ec372b4f19'
 
 // Your thirdweb api key - you can get one at https://thirdweb.com/dashboard/api-keys
-export const TWApiKey: string = process.env.NEXT_PUBLIC_TEMPLATE_CLIENT_ID || ''
+export const TWApiKey: string = process.env.NEXT_PUBLIC_APP_TEMPLATE_CLIENT_ID || ''
 export const activeChain: Chain = Mumbai
 
 export const loyaltyCardAddress: string = '0xE1822311D285d78EE98f5bD0f2edcF56fb7F1D29'

@@ -237,7 +237,7 @@ const Home: NextPage = () => {
           </p>
           <button onClick={handleMintNFT} className={styles.button}>Mint NFT</button>
           <button onClick={handleMintNFTGas} className={styles.button}>Mint NFT Gasless</button>
-          <button onClick={createSafeAccount} className={styles.button}>Create Base wallet </button>
+          <button onClick={createSafeAccount} className={styles.button}>Create Mumbai wallet </button>
           {/* <Pimlico /> */}
           <NFTGrid
             nfts={nfts}
