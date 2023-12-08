@@ -23,6 +23,13 @@
   transition: all 0.25s ease-in-out;
 }
 
+.button {
+  display: flex;
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: 1px solid grey;
+}
+
 .nftContainer:hover {
   cursor: pointer;
   transform: translate3d(0px, -4px, 0px);
