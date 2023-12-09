@@ -222,7 +222,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
             }
         });
 
-        console.log("smartAccountClient", smartAccountClient)
+        console.log("smartAccountClient", smartAccountClient);
         const gasPrices = await bundlerClient.getUserOperationGasPrice();
         console.log("Gas price", gasPrices);
 

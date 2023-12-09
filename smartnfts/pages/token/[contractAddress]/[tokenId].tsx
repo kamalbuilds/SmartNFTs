@@ -49,10 +49,9 @@ export default function TokenPage({ nft, contractMetadata }: Props) {
 
       if (wallet) {
         const smartWallet = newSmartWallet(nft);
-        await smartWallet.connect({
-          personalWallet: wallet,
-        });
-
+        console.log(smartWallet, "Smart wallet")
+        const a = await smartWallet.connect({ personalWallet: wallet });
+        console.log(a, "Smart wallet")
         console.log("Smart wallet", smartWallet);
 
         const isDeployed = await smartWallet.isDeployed();

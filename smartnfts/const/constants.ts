@@ -22,20 +22,23 @@ export const getaddresses: Record<number, Record<string, string>> = {
         factoryAddress: '0x02101dfB77FDE026414827Fdc604ddAF224F0921',
         implementation: '0xB983F7e345Fe5493d8ABb63aE1aB52ec372b4f19',
     },
+    // base goerli
     84531: {
         loyaltyCardAddress: '0x25CB5C350bD3062bEaE7458805Fb069200e37fD5',
         addidas: '0x23e8a70534308a4AAF76fb8C32ec13d17a3BD89e',
         tokenAddress: '0x2332323232323232323232323232323232323232',
     },
-    1442: {
-        loyaltyCardAddress: '0x3456C350bD3062bEaE7458805Fb069200e37fD5',
-        addidas: '0x3455656565656565656565656565656565656565',
-        tokenAddress: '0x006eF094e2DF803074Ef7Bce35994771a87a6fca',
-    },
+    // mantle testnet
     5001: {
         factoryAddress: '0xc220Fe2cAFfcAF2c333E6Ba5C12E03B28D2fe6f6',
-        implementation: '0x31Db34373163A1DAAb638f813E96c8315e6078B9',
+        implementation: '0xe551c18b1dfC8A2c21B7B3df932a64Aa07018c11',
         addidas: '0x18F5c6D3F317AA621b32D190c27e32A52609a4E9'
-    }
+    },
+    // zkevm
+    1442: {
+        factoryAddress: '0x5c729acd895eaa2b6a415219af6fb49b2ff7f5c3',
+        implementation: '0xbEA03c2A49aE2D9671900efeFdC604304f5CA957',
+        addidas: '0x18F5c6D3F317AA621b32D190c27e32A52609a4E9'
+    },
 };
 
