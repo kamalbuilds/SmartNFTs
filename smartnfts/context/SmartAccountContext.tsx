@@ -5,7 +5,7 @@ import { baseGoerli, polygonMumbai } from "viem/chains";
 import { privateKeyToSafeSmartAccount, signerToSafeSmartAccount } from "permissionless/accounts"
 import { useAddress, useSigner } from "@thirdweb-dev/react";
 import { generatePrivateKey, privateKeyToAccount, toAccount } from "viem/accounts";
-import { pimlicoBundlerActions, pimlicoPaymasterActions } from "permissionless/actions/pimlico";
+import { SponsorUserOperationParameters, pimlicoBundlerActions, pimlicoPaymasterActions } from "permissionless/actions/pimlico";
 import { UserOperation, bundlerActions, createSmartAccountClient, getSenderAddress } from "permissionless";
 import NFTAbi from "../const/NFTAbi.json";
 import { ThirdwebSDK } from "@thirdweb-dev/react";
@@ -141,7 +141,44 @@ const SmartAccountContextProvider = ({ children }: any) => {
         const paymasterClient = createClient({
             transport: http(`https://api.pimlico.io/v2/${chain}/rpc?apikey=${apiKey}`),
             chain: polygonMumbai
-        }).extend(pimlicoPaymasterActions)
+        }).extend(pimlicoPaymasterActions);
+
+        function estimateGasResponse (userOp: UserOperation) {
+            return fetch("https://paymaster.base.org", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                id: 1,
+                jsonrpc: "2.0",
+                method: "eth_paymasterAndDataForEstimateGas",
+                params: [
+                  userOp,
+                  "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789", // entrypoint
+                  "0x14A33", // chainid in hexadecimal
+                ],
+              }),
+            }).then(response => response.json());
+          }
+
+          function userOperationResponse (userOp : UserOperation) {
+            return  fetch("https://paymaster.base.org", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: 1,
+              jsonrpc: "2.0",
+              method: "eth_paymasterAndDataForUserOperation",
+              params: [
+                userOp,
+                "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+                "0x14A33",
+              ],
+            }),
+          }).then(response => response.json())};
 
         const smartAccountClient = createSmartAccountClient({
             account: res,
@@ -150,6 +187,39 @@ const SmartAccountContextProvider = ({ children }: any) => {
                 `https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`,
             ),
             sponsorUserOperation: paymasterClient.sponsorUserOperation, // optional
+        });
+
+        const baseAccountClient = createSmartAccountClient({
+            account: res,
+            chain: baseGoerli,
+            transport: http(
+                `https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`,
+            ),
+            sponsorUserOperation: async (args: SponsorUserOperationParameters) => {
+                paymasterClient.sponsorUserOperation, // optional
+
+                    // Request for eth_paymasterAndDataForEstimateGas
+                //     const gasresp = estimateGasResponse(args.userOperation);
+                // // call base hjere to get the paymaster and data -> paymasterAndData
+                //     args.userOperation.paymasterAndData = gasresp;
+
+
+                    args.userOperation.paymasterAndData = await estimateGasResponse(args.userOperation);
+                    bundlerClient.estimateUserOperationGas(args);
+              
+                    // Request for eth_paymasterAndDataForUserOperation
+                    // const signeduserop = userOperationResponse(args.userOperation);
+
+
+                    args.userOperation.paymasterAndData = await userOperationResponse(args.userOperation);
+
+                return {
+                    paymasterAndData: args.userOperation.paymasterAndData!,
+                    callGasLimit: args.userOperation.callGasLimit!,
+                    preVerificationGas: args.userOperation.preVerificationGas!,
+                    verificationGasLimit: args.userOperation.verificationGasLimit!,
+                }
+            }
         });
 
         console.log("smartAccountClient", smartAccountClient)
