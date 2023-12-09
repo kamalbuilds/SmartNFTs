@@ -23,7 +23,7 @@ import { ChakraProvider, DarkMode } from '@chakra-ui/react'
 import { useState } from "react";
 import { Mumbai, BaseGoerli, MantleTestnet, PolygonZkevmTestnet, CeloAlfajoresTestnet } from '@thirdweb-dev/chains';
 import ChainContext from "../context/chainselect";
-import SmartAccountContextProvider from "../context/SmartAccountContext";
+// import SmartAccountContextProvider from "../context/SmartAccountContext";
 
 class MyPaymaster extends PaymasterAPI {
 
@@ -101,6 +101,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [selectedChain, setSelectedChain] = useState(Mumbai);
   const app_id = process.env.NEXT_PUBLIC_APP_AADHAR_ID || "";
   return (
+    // @ts-ignore
     <ChainContext.Provider value={{ selectedChain, setSelectedChain }}>
       <ThirdwebProvider
         activeChain={selectedChain}
@@ -125,7 +126,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           }),
         ]}
       >
-        <SmartAccountContextProvider>
+        {/* <SmartAccountContextProvider> */}
           <ChakraProvider theme={DarkMode}>
             <AirstackProvider apiKey={process.env.NEXT_PUBLIC_APP_AIRSTACK_API_KEY || ""}>
               <AnonAadhaarProvider _appId={app_id}>
@@ -136,7 +137,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               </AnonAadhaarProvider>
             </AirstackProvider>
           </ChakraProvider>
-        </SmartAccountContextProvider>
+        {/* </SmartAccountContextProvider> */}
       </ThirdwebProvider>
     </ChainContext.Provider>
   );

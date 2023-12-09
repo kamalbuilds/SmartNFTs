@@ -26,7 +26,7 @@ import { createClient, createPublicClient, encodeFunctionData, getContract, http
 import { baseGoerli, polygonMumbai } from "viem/chains";
 import { BASE_GOERLI_PAYMASTER_URL } from "../lib/constants";
 import { generatePrivateKey, privateKeyToAccount, signMessage } from "viem/accounts"
-import { SmartAccountContext } from "../context/SmartAccountContext";
+// import { SmartAccountContext } from "../context/SmartAccountContext";
 import { UserOperation, bundlerActions, getSenderAddress, signUserOperationHashWithECDSA } from "permissionless";
 import NFTAbi from "../const/NFTAbi.json";
 import { pimlicoBundlerActions, pimlicoPaymasterActions } from "permissionless/actions/pimlico";
@@ -41,7 +41,7 @@ const Home: NextPage = () => {
   const addidas = getaddresses[selectedChain.selectedChain.chainId]?.addidas;
   console.log(addidas , selectedChain.selectedChain.chainId);
 
-  const { createSafeAccount, getInitCode } = useContext(SmartAccountContext);
+  // const { createSafeAccount, getInitCode } = useContext(SmartAccountContext);
 
   // const { contract: nftDropContract } = useContract(loyaltyCardAddress, "nft-drop");
   const { contract : addidasContract } = useContract(addidas);
@@ -82,7 +82,7 @@ const Home: NextPage = () => {
         image: "https://assets.ajio.com/medias/sys_master/root/20230807/qccn/64d0b9b6eebac147fcac6ee7/-473Wx593H-469496424-white-MODEL.jpg"
       };
 
-      const tx = await addidasContract.erc721.mintTo(address, metadata);
+      const tx = await addidasContract.erc721.mintTo(address as string, metadata);
       const receipt = tx.receipt; // the transaction receipt
       const tokenId = tx.id; // the id of the NFT minted
       const nft = await tx.data(); // (optional) fetch details of minted NFT
@@ -91,124 +91,124 @@ const Home: NextPage = () => {
     }
   }
 
-  const handleMintNFTGas = async () => {
-    if (addidasContract) {
+  // const handleMintNFTGas = async () => {
+  //   if (addidasContract) {
 
-      const SIMPLE_ACCOUNT_FACTORY_ADDRESS = "0x9406Cc6185a346906296840746125a0E44976454"
-      const chain = "mumbai" // find the list of chain names on the Pimlico verifying paymaster reference page
-      const apiKey = 'f3ebcd79-cc7f-4889-a044-b92fb8bfa7ee' // REPLACE THIS
-
-
-      const publicClient = createPublicClient({
-        // transport: http("https://base-goerli.g.alchemy.com/v2/CO_noBqhVqsoYj9lRQ7ThBs7mjhlgtu3"),
-        transport: http("https://polygon-mumbai.g.alchemy.com/v2/eoLi0hkG_t_JgHwf3wWhw62Gx0OnF9yf"),
-        chain: polygonMumbai
-      })
-
-      const bundlerClient = createClient({
-        transport: http(`https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`),
-        chain: polygonMumbai
-      })
-        .extend(bundlerActions)
-        .extend(pimlicoBundlerActions)
+  //     const SIMPLE_ACCOUNT_FACTORY_ADDRESS = "0x9406Cc6185a346906296840746125a0E44976454"
+  //     const chain = "mumbai" // find the list of chain names on the Pimlico verifying paymaster reference page
+  //     const apiKey = 'f3ebcd79-cc7f-4889-a044-b92fb8bfa7ee' // REPLACE THIS
 
 
-      const paymasterClient = createClient({
-        transport: http(`https://api.pimlico.io/v2/${chain}/rpc?apikey=${apiKey}`),
-        chain: polygonMumbai
-      }).extend(pimlicoPaymasterActions)
+  //     const publicClient = createPublicClient({
+  //       // transport: http("https://base-goerli.g.alchemy.com/v2/CO_noBqhVqsoYj9lRQ7ThBs7mjhlgtu3"),
+  //       transport: http("https://polygon-mumbai.g.alchemy.com/v2/eoLi0hkG_t_JgHwf3wWhw62Gx0OnF9yf"),
+  //       chain: polygonMumbai
+  //     })
 
-      console.log("Public Client", publicClient, bundlerClient, paymasterClient);
-
-
-      const initCode = await getInitCode(address);
-
-      const ENTRY_POINT_ADDRESS = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
-
-      const senderAddress = await getSenderAddress(publicClient, {
-        initCode,
-        entryPoint: ENTRY_POINT_ADDRESS
-      })
-      console.log("Calculated sender address:", senderAddress)
-
-      const to = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
-      const value = 0n
-      const data = "0x68656c6c6f"
-
-      const metadata = {
-        name: "Cool NFT",
-        description: "This is a Abhishek's NFT",
-        image: "https://assets.ajio.com/medias/sys_master/root/20230807/qccn/64d0b9b6eebac147fcac6ee7/-473Wx593H-469496424-white-MODEL.jpg"
-      };
-
-      const callData = encodeFunctionData({
-        abi: NFTAbi,
-        args: [address, metadata],
-        functionName: "mintTo"
-      })
-
-      console.log("Generated callData:", callData)
-
-      const gasPrice = await bundlerClient.getUserOperationGasPrice()
-
-      console.log("gasPrice", gasPrice)
-
-      //TODO: After getting the gas price, sign the useroperation and then send the paymaster sponser request to pimlico and then add the request to user operation and then send the transction
-
-      const userOperation = {
-        sender: senderAddress,
-        nonce: 0n,
-        initCode,
-        callData,
-        maxFeePerGas: gasPrice.fast.maxFeePerGas,
-        maxPriorityFeePerGas: gasPrice.fast.maxPriorityFeePerGas,
-        // dummy signature, needs to be there so the SimpleAccount doesn't immediately revert because of invalid signature length
-        signature: "0xa15569dd8f8324dbeabf8073fdec36d4b754f53ce5901e283c6de79af177dc94557fa3c9922cd7af2a96ca94402d35c39f266925ee6407aeb32b31d76978d4ba1c" as Hex
-      }
-
-      const sponsorUserOperationResult = await paymasterClient.sponsorUserOperation({
-        userOperation,
-        entryPoint: ENTRY_POINT_ADDRESS
-      })
-
-      const sponsoredUserOperation: UserOperation = {
-        ...userOperation,
-        preVerificationGas: sponsorUserOperationResult.preVerificationGas,
-        verificationGasLimit: sponsorUserOperationResult.verificationGasLimit,
-        callGasLimit: sponsorUserOperationResult.callGasLimit,
-        paymasterAndData: sponsorUserOperationResult.paymasterAndData
-      }
-
-      console.log("Received paymaster sponsor result:", sponsorUserOperationResult)
+  //     const bundlerClient = createClient({
+  //       transport: http(`https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`),
+  //       chain: polygonMumbai
+  //     })
+  //       .extend(bundlerActions)
+  //       .extend(pimlicoBundlerActions)
 
 
-      console.log("sponsoredUserOperation", sponsoredUserOperation);
+  //     const paymasterClient = createClient({
+  //       transport: http(`https://api.pimlico.io/v2/${chain}/rpc?apikey=${apiKey}`),
+  //       chain: polygonMumbai
+  //     }).extend(pimlicoPaymasterActions)
 
-      const signature = await signUserOperationHashWithECDSA({
-        account: address,
-        userOperation: sponsoredUserOperation,
-        chainId: polygonMumbai.id,
-        entryPoint: ENTRY_POINT_ADDRESS
-      })
-      sponsoredUserOperation.signature = signature
-
-      console.log("Generated signature:", signature)
-
-      // const metadata = {
-      //   name: "Cool NFT",
-      //   description: "This is a cool NFT",
-      //   image: "https://assets.ajio.com/medias/sys_master/root/20230807/qccn/64d0b9b6eebac147fcac6ee7/-473Wx593H-469496424-white-MODEL.jpg"
-      // };
-
-      const tx: Transaction<TransactionResultWithId<NFT>> = await addidasContract.erc721.mintTo.prepare(address, metadata);
-      console.log("Tx", tx);
-
-      const gasCost = await tx.estimateGasCost();
-      console.log("Tx gas cost", gasCost);
+  //     console.log("Public Client", publicClient, bundlerClient, paymasterClient);
 
 
-    }
-  }
+  //     const initCode = await getInitCode(address);
+
+  //     const ENTRY_POINT_ADDRESS = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+
+  //     const senderAddress = await getSenderAddress(publicClient, {
+  //       initCode,
+  //       entryPoint: ENTRY_POINT_ADDRESS
+  //     })
+  //     console.log("Calculated sender address:", senderAddress)
+
+  //     const to = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+  //     const value = 0n
+  //     const data = "0x68656c6c6f"
+
+  //     const metadata = {
+  //       name: "Cool NFT",
+  //       description: "This is a Abhishek's NFT",
+  //       image: "https://assets.ajio.com/medias/sys_master/root/20230807/qccn/64d0b9b6eebac147fcac6ee7/-473Wx593H-469496424-white-MODEL.jpg"
+  //     };
+
+  //     const callData = encodeFunctionData({
+  //       abi: NFTAbi,
+  //       args: [address, metadata],
+  //       functionName: "mintTo"
+  //     })
+
+  //     console.log("Generated callData:", callData)
+
+  //     const gasPrice = await bundlerClient.getUserOperationGasPrice()
+
+  //     console.log("gasPrice", gasPrice)
+
+  //     //TODO: After getting the gas price, sign the useroperation and then send the paymaster sponser request to pimlico and then add the request to user operation and then send the transction
+
+  //     const userOperation = {
+  //       sender: senderAddress,
+  //       nonce: 0n,
+  //       initCode,
+  //       callData,
+  //       maxFeePerGas: gasPrice.fast.maxFeePerGas,
+  //       maxPriorityFeePerGas: gasPrice.fast.maxPriorityFeePerGas,
+  //       // dummy signature, needs to be there so the SimpleAccount doesn't immediately revert because of invalid signature length
+  //       signature: "0xa15569dd8f8324dbeabf8073fdec36d4b754f53ce5901e283c6de79af177dc94557fa3c9922cd7af2a96ca94402d35c39f266925ee6407aeb32b31d76978d4ba1c" as Hex
+  //     }
+
+  //     const sponsorUserOperationResult = await paymasterClient.sponsorUserOperation({
+  //       userOperation,
+  //       entryPoint: ENTRY_POINT_ADDRESS
+  //     })
+
+  //     const sponsoredUserOperation: UserOperation = {
+  //       ...userOperation,
+  //       preVerificationGas: sponsorUserOperationResult.preVerificationGas,
+  //       verificationGasLimit: sponsorUserOperationResult.verificationGasLimit,
+  //       callGasLimit: sponsorUserOperationResult.callGasLimit,
+  //       paymasterAndData: sponsorUserOperationResult.paymasterAndData
+  //     }
+
+  //     console.log("Received paymaster sponsor result:", sponsorUserOperationResult)
+
+
+  //     console.log("sponsoredUserOperation", sponsoredUserOperation);
+
+  //     const signature = await signUserOperationHashWithECDSA({
+  //       account: address,
+  //       userOperation: sponsoredUserOperation,
+  //       chainId: polygonMumbai.id,
+  //       entryPoint: ENTRY_POINT_ADDRESS
+  //     })
+  //     sponsoredUserOperation.signature = signature
+
+  //     console.log("Generated signature:", signature)
+
+  //     // const metadata = {
+  //     //   name: "Cool NFT",
+  //     //   description: "This is a cool NFT",
+  //     //   image: "https://assets.ajio.com/medias/sys_master/root/20230807/qccn/64d0b9b6eebac147fcac6ee7/-473Wx593H-469496424-white-MODEL.jpg"
+  //     // };
+
+  //     const tx: Transaction<TransactionResultWithId<NFT>> = await addidasContract.erc721.mintTo.prepare(address, metadata);
+  //     console.log("Tx", tx);
+
+  //     const gasCost = await tx.estimateGasCost();
+  //     console.log("Tx gas cost", gasCost);
+
+
+  //   }
+  // }
 
   const signer = useSigner();
   console.log("Signer >>>>>>", signer);
@@ -236,8 +236,8 @@ const Home: NextPage = () => {
             token bound smart wallet & view it&apos;s balance.
           </p>
           <button onClick={handleMintNFT} className={styles.button}>Mint NFT</button>
-          <button onClick={handleMintNFTGas} className={styles.button}>Mint NFT Gasless</button>
-          <button onClick={createSafeAccount} className={styles.button}>Create Mumbai wallet </button>
+          {/* <button onClick={handleMintNFTGas} className={styles.button}>Mint NFT Gasless</button> */}
+          {/* <button onClick={createSafeAccount} className={styles.button}>Create Mumbai wallet </button> */}
           {/* <Pimlico /> */}
           <NFTGrid
             nfts={nfts}

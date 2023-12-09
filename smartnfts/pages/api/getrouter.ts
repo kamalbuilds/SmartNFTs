@@ -1,5 +1,6 @@
 
 import axios from "axios";
+import { NextApiRequest , NextApiResponse } from "next";
 
 export default async function handler(req : NextApiRequest, res : NextApiResponse)  {
   const { chainid, params } = req.query;
@@ -14,7 +15,7 @@ export default async function handler(req : NextApiRequest, res : NextApiRespons
     headers: {
       Authorization: `Bearer ${process.env.APIONEINCH}`,
     },
-    params: params ? JSON.parse(params) : {},
+    params: params ? params : {},
   };
 
   try {

@@ -37,6 +37,7 @@ const Brand: NextPage = () => {
             emptyText={
               "Looks like there are no product NFTs."
             }
+            contractaddress={addidas}
           />
         </div>
       ) : (

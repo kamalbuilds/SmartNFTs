@@ -77,7 +77,7 @@ const Profile: React.FC<ProfileProps> = ({ contractAddress, tokenId }) => {
   return (
     <Container maxWidth="lg">
       <div>
-        <h1 className='p-4 bg-green-300'>Profile Powered by 1inch 🦄 to analyse Uniswap's Position 🥃</h1>
+        <h1 className='p-4 bg-green-300'>Profile Powered by 1inch 🦄 to analyse Uniswap Position 🥃</h1>
         <div onClick={getAssetValue} className='p-4 border hover:cursor-pointer'>Get Asset value</div>
 
         {usersProtocol && Object.keys(usersProtocol).map((protocol, index) => {
