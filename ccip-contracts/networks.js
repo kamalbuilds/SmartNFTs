@@ -6,6 +6,8 @@
 
 require("@chainlink/env-enc").config()
 
+require("dotenv").config({ path: "./.env" })
+  
 const DEFAULT_VERIFICATION_BLOCK_CONFIRMATIONS = 2
 const SHARED_DON_PUBLIC_KEY =
   "a30264e813edc9927f73e036b7885ee25445b836979cb00ef112bc644bd16de2db866fa74648438b34f52bb196ffa386992e94e0a3dc6913cee52e2e98f1619c"

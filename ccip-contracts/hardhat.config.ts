@@ -1,5 +1,7 @@
-import * as dotenvenc from "@chainlink/env-enc"
-dotenvenc.config();
+import * as dotenvenc from "@chainlink/env-enc";
+import dotenv from "dotenv";
+
+dotenv.config({ path: ".env" });
 
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
