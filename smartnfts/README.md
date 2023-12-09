@@ -1,4 +1,4 @@
-# TBA with Personalised SmartNFTs for Users
+# TBA with Personalised SmartNFTs for Users.
 
 Own Brand NFTs which contain your assets along with a Loyalty NFT. 
 Take action like Investing in Pools. Connect to Ethereum. All as your NFT.
@@ -31,12 +31,12 @@ For querying ERC-6551 related things
 
 3. XDC and Submit to Alliance for Best Startup Idea
 
-4. Chainlink 
+4. Chainlink Automation
 
 5. Ethereum Foundation - Best use of Anon Aadhaar SDK   
 Authorised Indian citizens to buy the NFTs
 
-6. Deploy on Scroll, Mantle , Celo and PolygonZKevm- Defi App , Arbitrium
+6. Deploy on Scroll, Mantle , Celo and PolygonZKevm- Defi App , Arbitrium , X1 OKX
 
 ## AA related
 
