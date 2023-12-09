@@ -25,8 +25,7 @@ export const getaddresses: Record<number, Record<string, string>> = {
     // base goerli
     84531: {
         loyaltyCardAddress: '0x25CB5C350bD3062bEaE7458805Fb069200e37fD5',
-        addidas: '0x23e8a70534308a4AAF76fb8C32ec13d17a3BD89e',
-        tokenAddress: '0x2332323232323232323232323232323232323232',
+        addidas: '0x75DE6d2dE507a8572413cfBa2cD470418eF8c162',
     },
     // mantle testnet
     5001: {

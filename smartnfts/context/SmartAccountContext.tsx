@@ -9,6 +9,7 @@ import { SponsorUserOperationParameters, pimlicoBundlerActions, pimlicoPaymaster
 import { UserOperation, bundlerActions, createSmartAccountClient, getSenderAddress } from "permissionless";
 import NFTAbi from "../const/NFTAbi.json";
 import { ThirdwebSDK } from "@thirdweb-dev/react";
+import { UserOperationWithBigIntAsHex } from "permissionless/types/userOperation";
 
 export const SmartAccountContext = createContext({})
 
@@ -143,7 +144,8 @@ const SmartAccountContextProvider = ({ children }: any) => {
             chain: polygonMumbai
         }).extend(pimlicoPaymasterActions);
 
-        function estimateGasResponse (userOp: UserOperation) {
+        function estimateGasResponse (userOp: UserOperationWithBigIntAsHex) {
+            console.log(userOp,"gas response")
             return fetch("https://paymaster.base.org", {
               method: "POST",
               headers: {
@@ -163,6 +165,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
           }
 
           function userOperationResponse (userOp : UserOperation) {
+            console.log(userOp,"user response")
             return  fetch("https://paymaster.base.org", {
             method: "POST",
             headers: {
@@ -271,7 +274,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
             functionName: "mintTo"
         })
 
-        const resultTx = await smartAccountClient.sendTransaction({
+        const resultTx = await baseAccountClient.sendTransaction({
             to: to,
             data: callData,
         })
