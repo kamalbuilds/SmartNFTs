@@ -4,6 +4,7 @@ import Container from '../../components/Container/Container';
 import UserAssets from '../../components/UserAssets/UserAssets';
 import { useChainId } from '@thirdweb-dev/react';
 import { useAddress } from '@thirdweb-dev/react';
+import { CCIPNavbar } from '../../components/CCIP-Navbar/Navbar';
 
 interface ProfileProps {
   contractAddress: string;
@@ -77,6 +78,7 @@ const Profile: React.FC<ProfileProps> = ({ contractAddress, tokenId }) => {
   return (
     <Container maxWidth="lg">
       <div>
+        <CCIPNavbar />
         <h1 className='p-4 bg-green-300'>Profile Powered by 1inch 🦄 to analyse Uniswap Position 🥃</h1>
         <div onClick={getAssetValue} className='p-4 border hover:cursor-pointer'>Get Asset value</div>
 

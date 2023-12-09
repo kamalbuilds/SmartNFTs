@@ -24,6 +24,7 @@ import SmartWalletConnected from "../../../components/SmartWallet/smartConnected
 import Link from "next/link";
 import ChainContext from "../../../context/chainselect";
 import { useContext } from "react";
+import { Button } from "@chakra-ui/react";
 
 type Props = {
   nft: NFT;
@@ -116,7 +117,12 @@ export default function TokenPage({ nft, contractMetadata }: Props) {
               <>
               <SmartWalletConnected signer={signer} scaaddress={smartWalletAddress} />
               <Link href={`/u/${smartWalletAddress}`}>
-                Check profile
+                  <Button
+                    className='p-4 m-2 hover:cursor-pointer border-purple-800'
+                    bgColor="blue"
+                  >
+                    Go to your Smart Account
+                </Button>
               </Link>
               </>
             ) : (

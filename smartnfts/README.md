@@ -3,7 +3,6 @@
 Own Brand NFTs which contain your assets along with a Loyalty NFT. 
 Take action like Investing in Pools. Connect to Ethereum. All as your NFT.
 
-
 TBA - https://mumbai.polygonscan.com/address/0xb983f7e345fe5493d8abb63ae1ab52ec372b4f19
 
 Proof - https://mumbai.polygonscan.com/tx/0x4766175fba8a1626d75727bd057217c71c6613fb9a7a833d3922c9beb9a17ee7

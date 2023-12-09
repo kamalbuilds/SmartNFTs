@@ -3,6 +3,7 @@ import { useAddress, useSigner } from '@thirdweb-dev/react';
 import React from 'react';
 import { activeChain } from '../../const/constants';
 import { useSDK } from '@thirdweb-dev/react';
+import { Button } from '@chakra-ui/react';
 
 const Swap = () => {
     const address = useAddress();
@@ -173,11 +174,23 @@ const Swap = () => {
     }
       
     return (
-        <div className='p-4'>
-            Swap Component
-            <button onClick={checkAllowanceandApprove} className='p-4 hover:cursor-pointer border-purple-800'>Check Allowance</button>
-            <button onClick={handleSwap} className='p-4 hover:cursor-pointer border-purple-800'>Perform 1inch Swap</button>
-        </div>
+        <div className='p-4 gap-4'>
+            <Button
+                onClick={checkAllowanceandApprove}
+                className='p-4 m-2 hover:cursor-pointer border-green-800'
+                variant='solid'
+                bgColor="orange"
+            >
+                Check Allowance
+            </Button>
+            <Button
+                onClick={handleSwap}
+                className='p-4 m-2 hover:cursor-pointer border-purple-800'
+                bgColor="green"
+            >
+                Perform 1inch Swap
+            </Button>
+    </div>
     );
 };
 

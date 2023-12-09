@@ -11,6 +11,7 @@ import style from "../../styles/Token.module.css";
 import toast from "react-hot-toast";
 import toastStyle from "../../util/toastConfig";
 import Swap from "../SwapComponent/Swap";
+import Button from "../Button";
 interface ConnectedProps {
   signer: Signer | undefined;
   scaaddress: string | undefined;
