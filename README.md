@@ -6,6 +6,7 @@ Users NFT now has the power to take action like Investing in Uniswap Pools.
 
 🚀 Connect to 9 chains that we support seamlessly with the best UX.
 
+
 TBA - https://mumbai.polygonscan.com/address/0xb983f7e345fe5493d8abb63ae1ab52ec372b4f19
 
 Loyalty Membership NFTs 1 of each brand - https://mumbai.polygonscan.com/address/0xE1822311D285d78EE98f5bD0f2edcF56fb7F1D29
@@ -14,6 +15,37 @@ Brand ProductNFT Collection - 0xBd491b4321DbE318522Ab3266590883c9F055200
 
 ![ERC-6551 Structure](/smartnfts/public/image.png)
 ![Alt text](/smartnfts/public/registery.png)
+
+# CCIP Liquidity Manager Feature lets you manage your Postions across Multiple Dexes on different Chains.
+
+User can monitor his positions on different dexes like Aave , Uniswap 
+
+Chainlink automation 
+
+https://docs.chain.link/ccip/supported-networks/v1_2_0/testnet
+
+https://sepolia.etherscan.io/address/0xbaefaa39a6b5913f8cfda26e3d58b5310a8df511#code - Mock Vault
+https://mumbai.polygonscan.com/address/0xb79cc8e557ceab885c943e69f1bc1cd8259bb871#code - Mock Lending 
+
+npx hardhat deploy-lpsc --router 0x0bf3de8c5d3e8a2b34d2beeb17abfcebaf363a59 --vault 0xbaefaa39a6b5913f8cfda26e3d58b5310a8df511
+
+https://sepolia.etherscan.io/address/0x340900f5b46a726fe1df567dbdfb632279765cc4 - LPSC
+
+
+// npx hardhat deploy-monitor-mock-lending
+// --min-health-factor 50
+// --router 0x1035cabc275068e0f4b745a29cedf38e13af41b1
+// --link 0x326C977E6efc84E512bB9C30f76E30c160eD06FB
+// --lending-address 0xb79cc8e557ceab885c943e69f1bc1cd8259bb871
+// --token-address 0x326C977E6efc84E512bB9C30f76E30c160eD06FB
+// --on-behalf-of 0x0439427C42a099E7E362D86e2Bbe1eA27300f6Cb
+// --lpsc 0x340900f5b46a726fe1df567dbdfb632279765cc4
+// --liquidation-chain-selector 16015286601757825753 (sepolia)
+
+https://mumbai.polygonscan.com/address/0x8cc2862048d51c97a999ab7297c0bafb5bec68eb MonitorMockLending 
+
+https://mumbai.polygonscan.com/address/0x1035cabc275068e0f4b745a29cedf38e13af41b1 - CCIP Router Address
+
 
 Features
 
@@ -59,6 +91,7 @@ Account - https://testnet-zkevm.polygonscan.com/address/0x611c9D2e67BCA09f4208b7
 TBA- https://thirdweb.com/polygon-zkevm-testnet/0xbEA03c2A49aE2D9671900efeFdC604304f5CA957
 
 Rose Diamond Collection - https://testnet-zkevm.polygonscan.com/address/0x6B8195Cd326B27a88Bc1D7Dc4220a29A7d96F237
+
 ## Base
 Gold Earings https://base-goerli.blockscout.com/address/0x75DE6d2dE507a8572413cfBa2cD470418eF8c162
 
