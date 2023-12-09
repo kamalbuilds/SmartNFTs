@@ -1,7 +1,7 @@
 import { createContext, useMemo } from "react";
 import { Hex, TypedDataDefinition, concat, createClient, createPublicClient, encodeFunctionData, hashTypedData, http, parseEther, toBytes } from 'viem'
 import { BASE_GOERLI_PAYMASTER_URL } from "../lib/constants";
-import { baseGoerli, polygonMumbai } from "viem/chains";
+import { base, baseGoerli, polygonMumbai } from "viem/chains";
 import { privateKeyToSafeSmartAccount, signerToSafeSmartAccount } from "permissionless/accounts"
 import { useAddress, useSigner } from "@thirdweb-dev/react";
 import { generatePrivateKey, privateKeyToAccount, toAccount } from "viem/accounts";
@@ -10,6 +10,7 @@ import { UserOperation, bundlerActions, createSmartAccountClient, getSenderAddre
 import NFTAbi from "../const/NFTAbi.json";
 import { ThirdwebSDK } from "@thirdweb-dev/react";
 import { UserOperationWithBigIntAsHex } from "permissionless/types/userOperation";
+import { BigNumber } from "ethers";
 
 export const SmartAccountContext = createContext({})
 
@@ -37,6 +38,11 @@ const adjustVInSignature = (
     return (signature.slice(0, -2) + signatureV.toString(16)) as Hex
 }
 
+function correctHexString(payloadValue: string): string {
+    if(payloadValue.indexOf('0x0') > -1 && payloadValue.length > 3) payloadValue = payloadValue.replace('0x0','0x')
+    return payloadValue
+  }
+
 const SmartAccountContextProvider = ({ children }: any) => {
     const thirdwebSigner = useSigner();
     const address = '0x53296c23C51996F415F903d2d6a98ADe2B958DC8';
@@ -51,14 +57,15 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
     const publicClient = createPublicClient({
         // transport: http("https://base-goerli.g.alchemy.com/v2/CO_noBqhVqsoYj9lRQ7ThBs7mjhlgtu3"),
-        transport: http("https://polygon-mumbai.g.alchemy.com/v2/eoLi0hkG_t_JgHwf3wWhw62Gx0OnF9yf"),
-        chain: polygonMumbai
+        transport: http("https://goerli.base.org"),
+        chain: baseGoerli,
     })
 
 
     const ENTRY_POINT_ADDRESS = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
     const SIMPLE_ACCOUNT_FACTORY_ADDRESS = "0x9406Cc6185a346906296840746125a0E44976454"
-    const chain = "mumbai" // find the list of chain names on the Pimlico verifying paymaster reference page
+    const chain = 'base-goerli'
+    console.log(chain) // find the list of chain names on the Pimlico verifying paymaster reference page
     // const apiKey = 'f3ebcd79-cc7f-4889-a044-b92fb8bfa7ee' // REPLACE THIS
     const apiKey = '7c6767f3-0b69-496d-b6f1-db0c6b80718b' // REPLACE THIS
 
@@ -72,7 +79,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
     const paymasterClient = createClient({
         transport: http(`https://api.pimlico.io/v2/${chain}/rpc?apikey=${apiKey}`),
-        chain: polygonMumbai
+        chain: baseGoerli
     }).extend(pimlicoPaymasterActions)
 
     console.log("Public Client", publicClient, paymasterClient);
@@ -151,21 +158,33 @@ const SmartAccountContextProvider = ({ children }: any) => {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({
+              body: JSON.stringify( {
                 id: 1,
                 jsonrpc: "2.0",
                 method: "eth_paymasterAndDataForEstimateGas",
                 params: [
-                  userOp,
+                    {
+                   
+                    nonce: correctHexString(BigNumber.from(userOp.nonce).toHexString()),
+                    "sender": userOp.sender,
+                    "initCode": correctHexString(BigNumber.from(userOp.initCode).toHexString()),
+                    "callData": correctHexString(userOp.callData),
+                    "callGasLimit": correctHexString(BigNumber.from(userOp.callGasLimit).toHexString()),
+                    "verificationGasLimit":correctHexString(BigNumber.from(userOp.verificationGasLimit).toHexString()),
+                    "preVerificationGas": correctHexString(BigNumber.from(userOp.preVerificationGas).toHexString()),
+                    "maxFeePerGas": correctHexString(BigNumber.from(userOp.maxFeePerGas).toHexString()),
+                    "maxPriorityFeePerGas": correctHexString(BigNumber.from(userOp.maxPriorityFeePerGas).toHexString()),
+                  },
                   "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789", // entrypoint
                   "0x14A33", // chainid in hexadecimal
+                
                 ],
               }),
-            }).then(response => response.json());
+            }).then(response => response.json()).then(j => j.result)
           }
 
           function userOperationResponse (userOp : UserOperation) {
-            console.log(userOp,"user response")
+            console.log(userOp,"user operation response")
             return  fetch("https://paymaster.base.org", {
             method: "POST",
             headers: {
@@ -176,12 +195,24 @@ const SmartAccountContextProvider = ({ children }: any) => {
               jsonrpc: "2.0",
               method: "eth_paymasterAndDataForUserOperation",
               params: [
-                userOp,
+                {
+                   
+                    nonce: correctHexString(BigNumber.from(userOp.nonce).toHexString()),
+                    "sender": userOp.sender,
+                    "initCode": correctHexString(BigNumber.from(userOp.initCode).toHexString()),
+                    "callData": correctHexString(userOp.callData),
+                    "callGasLimit": correctHexString(BigNumber.from(userOp.callGasLimit).toHexString()),
+                    "verificationGasLimit":correctHexString(BigNumber.from(userOp.verificationGasLimit).toHexString()),
+                    "preVerificationGas":correctHexString(BigNumber.from(userOp.preVerificationGas).toHexString()),
+                    "maxFeePerGas": correctHexString(BigNumber.from(userOp.maxFeePerGas).toHexString()),
+                    "maxPriorityFeePerGas": correctHexString(BigNumber.from(userOp.maxPriorityFeePerGas).toHexString()),
+                  },
                 "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
                 "0x14A33",
               ],
             }),
-          }).then(response => response.json())};
+          }).then(response => response.json()).then(j => j.result);
+        }
 
         const smartAccountClient = createSmartAccountClient({
             account: res,
@@ -206,9 +237,8 @@ const SmartAccountContextProvider = ({ children }: any) => {
                 // // call base hjere to get the paymaster and data -> paymasterAndData
                 //     args.userOperation.paymasterAndData = gasresp;
 
-
-                    args.userOperation.paymasterAndData = await estimateGasResponse(args.userOperation);
                     bundlerClient.estimateUserOperationGas(args);
+                    args.userOperation.paymasterAndData = await estimateGasResponse(args.userOperation);
               
                     // Request for eth_paymasterAndDataForUserOperation
                     // const signeduserop = userOperationResponse(args.userOperation);
