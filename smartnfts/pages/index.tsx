@@ -26,7 +26,6 @@ import { createClient, createPublicClient, encodeFunctionData, getContract, http
 import { baseGoerli, polygonMumbai } from "viem/chains";
 import { BASE_GOERLI_PAYMASTER_URL } from "../lib/constants";
 import { generatePrivateKey, privateKeyToAccount, signMessage } from "viem/accounts"
-import Pimlico from "../components/pimlico";
 import { SmartAccountContext } from "../context/SmartAccountContext";
 import { UserOperation, bundlerActions, getSenderAddress, signUserOperationHashWithECDSA } from "permissionless";
 import NFTAbi from "../const/NFTAbi.json";
@@ -39,16 +38,17 @@ const Home: NextPage = () => {
   const address = useAddress();
   const selectedChain = useContext(ChainContext);
   const chain = useChainId();
-  const loyalty = getaddresses[selectedChain.selectedChain.chainId]?.loyaltyCardAddress;
-  console.log(loyalty, selectedChain.selectedChain.chainId);
+  const addidas = getaddresses[selectedChain.selectedChain.chainId]?.addidas;
+  console.log(addidas , selectedChain.selectedChain.chainId);
 
   const { createSafeAccount, getInitCode } = useContext(SmartAccountContext);
 
-  const { contract: nftDropContract } = useContract(loyaltyCardAddress, "nft-drop");
-  const { data: nfts, isLoading } = useOwnedNFTs(nftDropContract, address);
+  // const { contract: nftDropContract } = useContract(loyaltyCardAddress, "nft-drop");
+  const { contract : addidasContract } = useContract(addidas);
+  const { data: nfts, isLoading } = useOwnedNFTs(addidasContract, address);
 
   const fetchNftDetailsUsingAirstack = async () => {
-    const contractAddress = loyaltyCardAddress;
+    const contractAddress = addidas;
     const blockchain = "ethereum";
     const query = `query MyQuery {
       TokenBalances(
@@ -74,7 +74,7 @@ const Home: NextPage = () => {
   }
 
   const handleMintNFT = async () => {
-    if (nftDropContract) {
+    if (addidasContract) {
 
       const metadata = {
         name: "Cool NFT",
@@ -82,7 +82,7 @@ const Home: NextPage = () => {
         image: "https://assets.ajio.com/medias/sys_master/root/20230807/qccn/64d0b9b6eebac147fcac6ee7/-473Wx593H-469496424-white-MODEL.jpg"
       };
 
-      const tx = await nftDropContract.erc721.mintTo(address, metadata);
+      const tx = await addidasContract.erc721.mintTo(address, metadata);
       const receipt = tx.receipt; // the transaction receipt
       const tokenId = tx.id; // the id of the NFT minted
       const nft = await tx.data(); // (optional) fetch details of minted NFT
@@ -92,7 +92,7 @@ const Home: NextPage = () => {
   }
 
   const handleMintNFTGas = async () => {
-    if (nftDropContract) {
+    if (addidasContract) {
 
       const SIMPLE_ACCOUNT_FACTORY_ADDRESS = "0x9406Cc6185a346906296840746125a0E44976454"
       const chain = "mumbai" // find the list of chain names on the Pimlico verifying paymaster reference page
@@ -200,7 +200,7 @@ const Home: NextPage = () => {
       //   image: "https://assets.ajio.com/medias/sys_master/root/20230807/qccn/64d0b9b6eebac147fcac6ee7/-473Wx593H-469496424-white-MODEL.jpg"
       // };
 
-      const tx: Transaction<TransactionResultWithId<NFT>> = await nftDropContract.erc721.mintTo.prepare(address, metadata);
+      const tx: Transaction<TransactionResultWithId<NFT>> = await addidasContract.erc721.mintTo.prepare(address, metadata);
       console.log("Tx", tx);
 
       const gasCost = await tx.estimateGasCost();
@@ -245,6 +245,7 @@ const Home: NextPage = () => {
             emptyText={
               "Looks like you don't own any NFTs. Did you import your contract on the thirdweb dashboard? https://thirdweb.com/dashboard"
             }
+            contractaddress={addidas}
           />
         </div>
       ) : (
@@ -257,7 +258,7 @@ const Home: NextPage = () => {
       <Web3Button
         contractAddress="0x000000006551c19487814612e58FE06813775758"
         action={(contract) => {
-          contract.call("createAccount", ["0x55266d75D1a14E4572138116aF39863Ed6596E7F", "0x0000000000000000000000000000000000000000000000000000000000000000", 84531, loyaltyCardAddress, 0])
+          contract.call("createAccount", ["0x55266d75D1a14E4572138116aF39863Ed6596E7F", "0x0000000000000000000000000000000000000000000000000000000000000000", 84531, addidas, 0])
         }}
       >
         create TBA on Base

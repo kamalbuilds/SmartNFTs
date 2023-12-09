@@ -1,5 +1,5 @@
 import { createContext, useMemo } from "react";
-import { Hex, concat, createClient, createPublicClient, encodeFunctionData, hashTypedData, http, parseEther, toBytes } from 'viem'
+import { Hex, TypedDataDefinition, concat, createClient, createPublicClient, encodeFunctionData, hashTypedData, http, parseEther, toBytes } from 'viem'
 import { BASE_GOERLI_PAYMASTER_URL } from "../lib/constants";
 import { baseGoerli, polygonMumbai } from "viem/chains";
 import { privateKeyToSafeSmartAccount, signerToSafeSmartAccount } from "permissionless/accounts"
@@ -38,7 +38,7 @@ const adjustVInSignature = (
 
 const SmartAccountContextProvider = ({ children }: any) => {
     const thirdwebSigner = useSigner();
-    const address = '0x0439427C42a099E7E362D86e2Bbe1eA27300f6Cb';
+    const address = '0x53296c23C51996F415F903d2d6a98ADe2B958DC8';
     console.log("thirdwebSigner", thirdwebSigner)
 
     const ownerPrivateKey = `0xec163bb6c451bd478b537fd49c0258b4fd72fe52d67a1e63452e66a68a3b439a`;
@@ -96,15 +96,19 @@ const SmartAccountContextProvider = ({ children }: any) => {
                 console.log("here", args);
                 return thirdwebSigner?.signMessage(args.message)
             },
-            signTypedData: async (typedData: any) => {
+            signTypedData: async (typedData: TypedDataDefinition) => {
                 console.log("here", typedData);
 
                 // return sdk.wallet.signTypedData();
-                return sdk.wallet.signTypedData(
+                return (await sdk.wallet.signTypedData(
+                    // @ts-ignore
                     typedData.domain,
-                    typedData.types,
-                    typedData.message,
-                  );
+                    {
+                        [typedData.primaryType]: typedData.types[typedData.primaryType]
+                    },
+                     typedData.message,
+                    
+                  )).signature;
 
                 // const messageHash: string = hashTypedData(typedData) || ""
 
@@ -182,7 +186,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
         console.log("Public Client", publicClient, paymasterClient);
 
-        const to = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+        const to = "0xBd491b4321DbE318522Ab3266590883c9F055200"
         const data = "0x68656c6c6f"
 
         const metadata = {
@@ -199,10 +203,11 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
         const resultTx = await smartAccountClient.sendTransaction({
             to: to,
-            data: callData
+            data: callData,
         })
 
         console.log(resultTx);
+
 
         // const callData = encodeFunctionData({
         //     abi: [{

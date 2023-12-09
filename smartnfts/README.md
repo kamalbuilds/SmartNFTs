@@ -38,6 +38,12 @@ Authorised Indian citizens to buy the NFTs
 
 6. Deploy on Scroll, Mantle , Celo and PolygonZKevm- Defi App , Arbitrium , X1 OKX
 
+## Mantle
+ERC6551Registery - https://explorer.testnet.mantle.xyz/address/0xc220Fe2cAFfcAF2c333E6Ba5C12E03B28D2fe6f6/contracts#address-tabs
+
+ERC6551Account - https://explorer.testnet.mantle.xyz/address/0x31Db34373163A1DAAb638f813E96c8315e6078B9/contracts#address-tabs
+
+
 ## AA related
 
 1. Best use of Account Abstraction and Base Paymaster ⸺ $4,000

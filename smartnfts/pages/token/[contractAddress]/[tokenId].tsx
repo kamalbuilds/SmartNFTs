@@ -10,7 +10,8 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import { NFT, ThirdwebSDK } from "@thirdweb-dev/sdk";
 import {
   activeChain,
-  loyaltyCardAddress,
+  addidas,
+  getaddresses,
   TWApiKey,
 } from "../../../const/constants";
 import styles from "../../../styles/Token.module.css";
@@ -19,6 +20,8 @@ import { Signer } from "ethers";
 import newSmartWallet from "../../../components/SmartWallet/SmartWallet";
 import SmartWalletConnected from "../../../components/SmartWallet/smartConnected";
 import Link from "next/link";
+import ChainContext from "../../../context/chainselect";
+import { useContext } from "react";
 
 type Props = {
   nft: NFT;
@@ -26,6 +29,9 @@ type Props = {
 };
 
 export default function TokenPage({ nft, contractMetadata }: Props) {
+  const { selectedChain } = useContext(ChainContext);
+  const activeChain = selectedChain;
+  const addidasaddres = getaddresses[activeChain.chainId]?.addidas;
   const [smartWalletAddress, setSmartWalletAddress] = useState<string | null>(
     null
   );
@@ -123,12 +129,13 @@ export default function TokenPage({ nft, contractMetadata }: Props) {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const tokenId = context.params?.tokenId as string;
+  
 
   const sdk = new ThirdwebSDK(activeChain, {
     secretKey: process.env.TW_SECRET_KEY,
   });
 
-  const contract = await sdk.getContract(loyaltyCardAddress);
+  const contract = await sdk.getContract(addidas);
 
   const nft = await contract.erc721.get(tokenId);
   console.log(nft.metadata.uri, "Here!!!");
@@ -149,18 +156,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
+
+
   const sdk = new ThirdwebSDK(activeChain, {
     secretKey: process.env.TW_SECRET_KEY,
   });
 
-  const contract = await sdk.getContract(loyaltyCardAddress);
+  const contract = await sdk.getContract(addidas);
 
   const nfts = await contract.erc721.getAll();
 
   const paths = nfts.map((nft) => {
     return {
       params: {
-        contractAddress: loyaltyCardAddress,
+        contractAddress: addidas,
         tokenId: nft.metadata.id,
       },
     };
