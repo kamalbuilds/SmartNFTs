@@ -41,5 +41,11 @@ export const getaddresses: Record<number, Record<string, string>> = {
         implementation: '0xbEA03c2A49aE2D9671900efeFdC604304f5CA957',
         addidas: '0x18F5c6D3F317AA621b32D190c27e32A52609a4E9'
     },
+    // sepolia
+    534351: {
+        factoryAddress: '0xdf366B8FB6553E6F5826Ee6195cb9330A34442c1',
+        implementation: '0xa0c5d2d665869641e86c3d5fe3c9db4fff18f67b',
+        addidas: ''
+    }
 };
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useSDK } from "@thirdweb-dev/react";
 
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from 'react';
 import {
     Accordion,
@@ -48,6 +49,7 @@ const UserAssets = ({
             const result = await response.json();
             console.log("Result", result);
 
+            // @ts-ignore
             const res = result.filter(asset => asset.is_active == 1)
             console.log("Res", res);
             setActiveAssets(res);
@@ -101,6 +103,7 @@ const UserAssets = ({
                             <div className='border flex-1 border-gray-600 rounded-lg w-fit px-4 py-2'>
                                 <h2 className='text-[18px] mt-2 mb-4'>Chains:</h2>
                                 <div className='flex flex-col gap-4'>
+                                {/* @ts-ignore */}
                                     {chains.map((chain, index) => {
                                         const chainName = getChainNamebyId(chain.chain_id)
                                         return (

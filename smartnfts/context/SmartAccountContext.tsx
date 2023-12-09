@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { createContext, useMemo } from "react";
 import { Hex, TypedDataDefinition, concat, createClient, createPublicClient, encodeFunctionData, hashTypedData, http, parseEther, toBytes } from 'viem'
 import { BASE_GOERLI_PAYMASTER_URL } from "../lib/constants";
 import { base, baseGoerli, polygonMumbai } from "viem/chains";
-import { privateKeyToSafeSmartAccount, signerToSafeSmartAccount } from "permissionless/accounts"
+import {  signerToSafeSmartAccount } from "permissionless/accounts"
 import { useAddress, useSigner } from "@thirdweb-dev/react";
 import { generatePrivateKey, privateKeyToAccount, toAccount } from "viem/accounts";
 import { SponsorUserOperationParameters, pimlicoBundlerActions, pimlicoPaymasterActions } from "permissionless/actions/pimlico";
@@ -11,32 +12,33 @@ import NFTAbi from "../const/NFTAbi.json";
 import { ThirdwebSDK } from "@thirdweb-dev/react";
 import { UserOperationWithBigIntAsHex } from "permissionless/types/userOperation";
 import { BigNumber } from "ethers";
+import { createPimlicoPaymasterClient } from "permissionless/clients/pimlico";
 
 export const SmartAccountContext = createContext({})
 
-const adjustVInSignature = (
-    signingMethod: "eth_sign" | "eth_signTypedData",
-    signature: string
-): Hex => {
-    const ETHEREUM_V_VALUES = [0, 1, 27, 28]
-    const MIN_VALID_V_VALUE_FOR_SAFE_ECDSA = 27
-    let signatureV = parseInt(signature.slice(-2), 16)
-    if (!ETHEREUM_V_VALUES.includes(signatureV)) {
-        throw new Error("Invalid signature")
-    }
-    if (signingMethod === "eth_sign") {
-        if (signatureV < MIN_VALID_V_VALUE_FOR_SAFE_ECDSA) {
-            signatureV += MIN_VALID_V_VALUE_FOR_SAFE_ECDSA
-        }
-        signatureV += 4
-    }
-    if (signingMethod === "eth_signTypedData") {
-        if (signatureV < MIN_VALID_V_VALUE_FOR_SAFE_ECDSA) {
-            signatureV += MIN_VALID_V_VALUE_FOR_SAFE_ECDSA
-        }
-    }
-    return (signature.slice(0, -2) + signatureV.toString(16)) as Hex
-}
+// const adjustVInSignature = (
+//     signingMethod: "eth_sign" | "eth_signTypedData",
+//     signature: string
+// ): Hex => {
+//     const ETHEREUM_V_VALUES = [0, 1, 27, 28]
+//     const MIN_VALID_V_VALUE_FOR_SAFE_ECDSA = 27
+//     let signatureV = parseInt(signature.slice(-2), 16)
+//     if (!ETHEREUM_V_VALUES.includes(signatureV)) {
+//         throw new Error("Invalid signature")
+//     }
+//     if (signingMethod === "eth_sign") {
+//         if (signatureV < MIN_VALID_V_VALUE_FOR_SAFE_ECDSA) {
+//             signatureV += MIN_VALID_V_VALUE_FOR_SAFE_ECDSA
+//         }
+//         signatureV += 4
+//     }
+//     if (signingMethod === "eth_signTypedData") {
+//         if (signatureV < MIN_VALID_V_VALUE_FOR_SAFE_ECDSA) {
+//             signatureV += MIN_VALID_V_VALUE_FOR_SAFE_ECDSA
+//         }
+//     }
+//     return (signature.slice(0, -2) + signatureV.toString(16)) as Hex
+// }
 
 function correctHexString(payloadValue: string): string {
     if(payloadValue.indexOf('0x0') > -1 && payloadValue.length > 3) payloadValue = payloadValue.replace('0x0','0x')
@@ -48,12 +50,10 @@ const SmartAccountContextProvider = ({ children }: any) => {
     const address = '0x53296c23C51996F415F903d2d6a98ADe2B958DC8';
     console.log("thirdwebSigner", thirdwebSigner)
 
-    const ownerPrivateKey = `0xec163bb6c451bd478b537fd49c0258b4fd72fe52d67a1e63452e66a68a3b439a`;
-    const signer = privateKeyToAccount(ownerPrivateKey)
 
     const signer_res = toAccount(address);
 
-    console.log("Signer", signer, thirdwebSigner, signer_res);
+    console.log("Signer", thirdwebSigner, signer_res);
 
     const publicClient = createPublicClient({
         // transport: http("https://base-goerli.g.alchemy.com/v2/CO_noBqhVqsoYj9lRQ7ThBs7mjhlgtu3"),
@@ -73,24 +73,23 @@ const SmartAccountContextProvider = ({ children }: any) => {
         transport: http(`https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`),
         chain: polygonMumbai
     })
+    // @ts-ignore
         .extend(bundlerActions)
         .extend(pimlicoBundlerActions)
 
 
-    const paymasterClient = createClient({
+    const paymasterClient = createPimlicoPaymasterClient({
         transport: http(`https://api.pimlico.io/v2/${chain}/rpc?apikey=${apiKey}`),
         chain: polygonMumbai
-    }).extend(pimlicoPaymasterActions)
+    })
 
     console.log("Public Client", publicClient, paymasterClient);
 
     const createSafeAccount = async () => {
 
-        const ownerPrivateKey = `0xec163bb6c451bd478b537fd49c0258b4fd72fe52d67a1e63452e66a68a3b439a`;
-        const signer = privateKeyToAccount(ownerPrivateKey)
 
-        console.log("Signer", signer, thirdwebSigner);
-
+        console.log("Signer", thirdwebSigner);
+// @ts-ignore
             const sdk = ThirdwebSDK.fromSigner(thirdwebSigner, 80001 , {
         clientId: process.env.NEXT_PUBLIC_APP_TEMPLATE_CLIENT_ID, // Use client id if using on the client side, get it from dashboard settings
 // Use secret key if using on the server, get it from dashboard settings. Do NOT expose your secret key to the client-side
@@ -132,6 +131,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
             entryPoint: ENTRY_POINT_ADDRESS,
             signer: customSigner,
             safeVersion: "1.4.1",
+            // @ts-ignore
             saltNonce: 100n,
         })
 
@@ -140,7 +140,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
         const bundlerClient = createClient({
             transport: http(`https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`),
-            chain: 
+            chain: baseGoerli
         })
             .extend(bundlerActions)
             .extend(pimlicoBundlerActions)
@@ -196,20 +196,20 @@ const SmartAccountContextProvider = ({ children }: any) => {
               jsonrpc: "2.0",
               method: "eth_paymasterAndDataForUserOperation",
               params: [
-                // {
+                {
                    
-                //     nonce: correctHexString(BigNumber.from(userOp.nonce).toHexString()),
-                //     "sender": userOp.sender,
-                //     "initCode": correctHexString(BigNumber.from(userOp.initCode).toHexString()),
-                //     "callData": correctHexString(userOp.callData),
-                //     "callGasLimit": correctHexString(BigNumber.from(userOp.callGasLimit).toHexString()),
-                //     "verificationGasLimit":correctHexString(BigNumber.from(userOp.verificationGasLimit).toHexString()),
-                //     "preVerificationGas":correctHexString(BigNumber.from(userOp.preVerificationGas).toHexString()),
-                //     "maxFeePerGas": correctHexString(BigNumber.from(userOp.maxFeePerGas).toHexString()),
-                //     "maxPriorityFeePerGas": correctHexString(BigNumber.from(userOp.maxPriorityFeePerGas).toHexString()),
-                //   },
-                // "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-                // "0x14A33",
+                    nonce: correctHexString(BigNumber.from(userOp.nonce).toHexString()),
+                    "sender": userOp.sender,
+                    "initCode": correctHexString(BigNumber.from(userOp.initCode).toHexString()),
+                    "callData": correctHexString(userOp.callData),
+                    "callGasLimit": correctHexString(BigNumber.from(userOp.callGasLimit).toHexString()),
+                    "verificationGasLimit":correctHexString(BigNumber.from(userOp.verificationGasLimit).toHexString()),
+                    "preVerificationGas":correctHexString(BigNumber.from(userOp.preVerificationGas).toHexString()),
+                    "maxFeePerGas": correctHexString(BigNumber.from(userOp.maxFeePerGas).toHexString()),
+                    "maxPriorityFeePerGas": correctHexString(BigNumber.from(userOp.maxPriorityFeePerGas).toHexString()),
+                  },
+                "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+                "0x14A33",
               ],
             }),
           }).then(response => response.json()).then(j => j.result);
@@ -411,6 +411,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
                     stateMutability: "nonpayable",
                     type: "function",
                 }],
+                // @ts-ignore
                 args: [address, 0n]
             })
         ]);
