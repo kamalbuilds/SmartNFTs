@@ -58,7 +58,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
     const publicClient = createPublicClient({
         // transport: http("https://base-goerli.g.alchemy.com/v2/CO_noBqhVqsoYj9lRQ7ThBs7mjhlgtu3"),
         transport: http("https://goerli.base.org"),
-        chain: baseGoerli,
+        chain: polygonMumbai,
     })
 
 
@@ -79,7 +79,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
     const paymasterClient = createClient({
         transport: http(`https://api.pimlico.io/v2/${chain}/rpc?apikey=${apiKey}`),
-        chain: baseGoerli
+        chain: polygonMumbai
     }).extend(pimlicoPaymasterActions)
 
     console.log("Public Client", publicClient, paymasterClient);
@@ -140,7 +140,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
         const bundlerClient = createClient({
             transport: http(`https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`),
-            chain: polygonMumbai
+            chain: 
         })
             .extend(bundlerActions)
             .extend(pimlicoBundlerActions)
@@ -151,7 +151,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
             chain: polygonMumbai
         }).extend(pimlicoPaymasterActions);
 
-        function estimateGasResponse (userOp: UserOperationWithBigIntAsHex) {
+        function estimateGasResponse (userOp: UserOperation) {
             console.log(userOp,"gas response")
             return fetch("https://paymaster.base.org", {
               method: "POST",
@@ -168,7 +168,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
                     nonce: correctHexString(BigNumber.from(userOp.nonce).toHexString()),
                     "sender": userOp.sender,
                     "initCode": correctHexString(BigNumber.from(userOp.initCode).toHexString()),
-                    "callData": correctHexString(userOp.callData),
+                    "callData": correctHexString(BigNumber.from(userOp.callData).toHexString()),
                     "callGasLimit": correctHexString(BigNumber.from(userOp.callGasLimit).toHexString()),
                     "verificationGasLimit":correctHexString(BigNumber.from(userOp.verificationGasLimit).toHexString()),
                     "preVerificationGas": correctHexString(BigNumber.from(userOp.preVerificationGas).toHexString()),
@@ -184,7 +184,8 @@ const SmartAccountContextProvider = ({ children }: any) => {
           }
 
           function userOperationResponse (userOp : UserOperation) {
-            console.log(userOp,"user operation response")
+            console.log(userOp,"user operation response");
+
             return  fetch("https://paymaster.base.org", {
             method: "POST",
             headers: {
@@ -195,20 +196,20 @@ const SmartAccountContextProvider = ({ children }: any) => {
               jsonrpc: "2.0",
               method: "eth_paymasterAndDataForUserOperation",
               params: [
-                {
+                // {
                    
-                    nonce: correctHexString(BigNumber.from(userOp.nonce).toHexString()),
-                    "sender": userOp.sender,
-                    "initCode": correctHexString(BigNumber.from(userOp.initCode).toHexString()),
-                    "callData": correctHexString(userOp.callData),
-                    "callGasLimit": correctHexString(BigNumber.from(userOp.callGasLimit).toHexString()),
-                    "verificationGasLimit":correctHexString(BigNumber.from(userOp.verificationGasLimit).toHexString()),
-                    "preVerificationGas":correctHexString(BigNumber.from(userOp.preVerificationGas).toHexString()),
-                    "maxFeePerGas": correctHexString(BigNumber.from(userOp.maxFeePerGas).toHexString()),
-                    "maxPriorityFeePerGas": correctHexString(BigNumber.from(userOp.maxPriorityFeePerGas).toHexString()),
-                  },
-                "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-                "0x14A33",
+                //     nonce: correctHexString(BigNumber.from(userOp.nonce).toHexString()),
+                //     "sender": userOp.sender,
+                //     "initCode": correctHexString(BigNumber.from(userOp.initCode).toHexString()),
+                //     "callData": correctHexString(userOp.callData),
+                //     "callGasLimit": correctHexString(BigNumber.from(userOp.callGasLimit).toHexString()),
+                //     "verificationGasLimit":correctHexString(BigNumber.from(userOp.verificationGasLimit).toHexString()),
+                //     "preVerificationGas":correctHexString(BigNumber.from(userOp.preVerificationGas).toHexString()),
+                //     "maxFeePerGas": correctHexString(BigNumber.from(userOp.maxFeePerGas).toHexString()),
+                //     "maxPriorityFeePerGas": correctHexString(BigNumber.from(userOp.maxPriorityFeePerGas).toHexString()),
+                //   },
+                // "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+                // "0x14A33",
               ],
             }),
           }).then(response => response.json()).then(j => j.result);
@@ -225,26 +226,57 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
         const baseAccountClient = createSmartAccountClient({
             account: res,
-            chain: baseGoerli,
+            chain: polygonMumbai,
             transport: http(
                 `https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`,
             ),
             sponsorUserOperation: async (args: SponsorUserOperationParameters) => {
-                paymasterClient.sponsorUserOperation, // optional
+                // paymasterClient.sponsorUserOperation,
 
                     // Request for eth_paymasterAndDataForEstimateGas
-                //     const gasresp = estimateGasResponse(args.userOperation);
-                // // call base hjere to get the paymaster and data -> paymasterAndData
-                //     args.userOperation.paymasterAndData = gasresp;
+                    // const gasresp = estimateGasResponse(args.userOperation);
+                // call base hjere to get the paymaster and data -> paymasterAndData
+                    // args.userOperation.paymasterAndData = gasresp;
 
-                    bundlerClient.estimateUserOperationGas(args);
-                    args.userOperation.paymasterAndData = await estimateGasResponse(args.userOperation);
+                    const estimation = await bundlerClient.estimateUserOperationGas({
+                        userOperation: {
+                            ...args.userOperation,
+                            paymasterAndData: args.userOperation.paymasterAndData || "0x"
+                        },
+                        entryPoint: args.entryPoint
+                    }); // err
+                    
+                    console.log(estimation, "estimation");
+                    
+                    args.userOperation.paymasterAndData = await estimateGasResponse({
+                        ...args.userOperation,
+                        paymasterAndData: args.userOperation.paymasterAndData || "0x",
+                        preVerificationGas: estimation.preVerificationGas,
+                       verificationGasLimit: estimation.verificationGasLimit,
+                        callGasLimit: estimation.callGasLimit,
+                    });
+
+                    const estimation2 = await bundlerClient.estimateUserOperationGas({
+                        userOperation: {
+                            ...args.userOperation,
+                            paymasterAndData: args.userOperation.paymasterAndData || "0x"
+                        },
+                        entryPoint: args.entryPoint
+                    });
+
+
               
                     // Request for eth_paymasterAndDataForUserOperation
                     // const signeduserop = userOperationResponse(args.userOperation);
 
 
-                    args.userOperation.paymasterAndData = await userOperationResponse(args.userOperation);
+                    args.userOperation.paymasterAndData = await userOperationResponse({
+                        ...args.userOperation,
+                        paymasterAndData: args.userOperation.paymasterAndData || "0x",
+                        preVerificationGas: estimation.preVerificationGas + BigInt(2000),
+                       verificationGasLimit: estimation.verificationGasLimit + BigInt(4000),
+                        callGasLimit: estimation.callGasLimit,
+                    });
 
                 return {
                     paymasterAndData: args.userOperation.paymasterAndData!,
@@ -289,7 +321,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
         console.log("Public Client", publicClient, paymasterClient);
 
-        const to = "0xBd491b4321DbE318522Ab3266590883c9F055200"
+        const to = "0x75DE6d2dE507a8572413cfBa2cD470418eF8c162"
         const data = "0x68656c6c6f"
 
         const metadata = {
@@ -304,7 +336,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
             functionName: "mintTo"
         })
 
-        const resultTx = await baseAccountClient.sendTransaction({
+        const resultTx = await smartAccountClient.sendTransaction({
             to: to,
             data: callData,
         })
