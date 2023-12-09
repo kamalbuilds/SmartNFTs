@@ -1,4 +1,4 @@
-# Create An ERC-6551 Tokenbound Account with an ERC-721 NFT on Mantle and OKX
+# Creatipng ERC-6551 Tokenbound Account with an ERC-721 NFT on Mantle and OKX
 
 ## What is ERC-6551 and Tokenbound Accounts (TBA)?
 
