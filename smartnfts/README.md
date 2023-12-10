@@ -3,14 +3,17 @@
 Own Brand NFTs which contain your assets along with a Loyalty NFT. 
 Take action like Investing in Pools. Connect to Ethereum. All as your NFT.
 
+
 TBA - https://mumbai.polygonscan.com/address/0xb983f7e345fe5493d8abb63ae1ab52ec372b4f19
+
+Proof - https://mumbai.polygonscan.com/tx/0x4766175fba8a1626d75727bd057217c71c6613fb9a7a833d3922c9beb9a17ee7
 
 Loyalty Membership NFTs 1 of each brand - https://mumbai.polygonscan.com/address/0xE1822311D285d78EE98f5bD0f2edcF56fb7F1D29
 
 Brand ProductNFT Collection - 0xBd491b4321DbE318522Ab3266590883c9F055200
 
-![ERC-6551 Structure](/public/image.png)
-![Alt text](public/registery.png)
+![ERC-6551 Structure](./public/image.png)
+![Alt text](./public/registery.png)
 
 Features
 
@@ -73,6 +76,9 @@ TBA - https://sepolia.scrollscan.com/address/0xa0c5d2d665869641e86c3d5fe3c9db4ff
 
 ## Arbitrium 
 
+Registery 0x02101dfB77FDE026414827Fdc604ddAF224F0921
+
+TBA - https://goerli.arbiscan.io/address/0xdf366B8FB6553E6F5826Ee6195cb9330A34442c1
 
 
 ## OKX X1 Chain 

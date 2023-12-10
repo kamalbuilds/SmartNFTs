@@ -14,7 +14,8 @@ import { UserOperationWithBigIntAsHex } from "permissionless/types/userOperation
 import { BigNumber } from "ethers";
 import { createPimlicoPaymasterClient } from "permissionless/clients/pimlico";
 
-export const SmartAccountContext = createContext({})
+export const SmartAccountContext = createContext({});
+
 
 function correctHexString(payloadValue: string): string {
     if(payloadValue.indexOf('0x0') > -1 && payloadValue.length > 3) payloadValue = payloadValue.replace('0x0','0x')
@@ -40,7 +41,11 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
     const ENTRY_POINT_ADDRESS = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
     const SIMPLE_ACCOUNT_FACTORY_ADDRESS = "0x9406Cc6185a346906296840746125a0E44976454"
-    const chain = 'base-goerli'
+    const chain = 'base-goerli';
+    const celo = 'celo-alfajores-testnet';
+    const sepolia = 'scroll-sepolia-testnet';
+    const arbg = 'arbitrum-goerli';
+    
     console.log(chain) // find the list of chain names on the Pimlico verifying paymaster reference page
     // const apiKey = 'f3ebcd79-cc7f-4889-a044-b92fb8bfa7ee' // REPLACE THIS
     const apiKey = '7c6767f3-0b69-496d-b6f1-db0c6b80718b' // REPLACE THIS

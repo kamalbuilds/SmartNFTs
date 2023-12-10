@@ -57,6 +57,7 @@ Account - https://testnet-zkevm.polygonscan.com/address/0x611c9D2e67BCA09f4208b7
 
 TBA- https://thirdweb.com/polygon-zkevm-testnet/0xbEA03c2A49aE2D9671900efeFdC604304f5CA957
 
+Rose Diamond Collection - https://testnet-zkevm.polygonscan.com/address/0x6B8195Cd326B27a88Bc1D7Dc4220a29A7d96F237
 ## Base
 Gold Earings https://base-goerli.blockscout.com/address/0x75DE6d2dE507a8572413cfBa2cD470418eF8c162
 
