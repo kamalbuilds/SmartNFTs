@@ -2,7 +2,7 @@
 import { createContext, useMemo } from "react";
 import { Hex, TypedDataDefinition, concat, createClient, createPublicClient, encodeFunctionData, hashTypedData, http, parseEther, toBytes } from 'viem'
 import { BASE_GOERLI_PAYMASTER_URL } from "../lib/constants";
-import { base, baseGoerli, polygonMumbai } from "viem/chains";
+import { base, baseGoerli } from "viem/chains";
 import {  signerToSafeSmartAccount } from "permissionless/accounts"
 import { useAddress, useSigner } from "@thirdweb-dev/react";
 import { generatePrivateKey, privateKeyToAccount, toAccount } from "viem/accounts";
@@ -35,14 +35,14 @@ const SmartAccountContextProvider = ({ children }: any) => {
     const publicClient = createPublicClient({
         // transport: http("https://base-goerli.g.alchemy.com/v2/CO_noBqhVqsoYj9lRQ7ThBs7mjhlgtu3"),
         transport: http("https://goerli.base.org"),
-        chain: polygonMumbai,
+        chain: baseGoerli,
     })
 
 
     const ENTRY_POINT_ADDRESS = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
     const SIMPLE_ACCOUNT_FACTORY_ADDRESS = "0x9406Cc6185a346906296840746125a0E44976454"
-    const chain = 'base-goerli';
-    const celo = 'celo-alfajores-testnet';
+    // const chain = 'base-goerli';
+    const chain = 'celo-alfajores-testnet';
     const sepolia = 'scroll-sepolia-testnet';
     const arbg = 'arbitrum-goerli';
     
@@ -52,7 +52,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
     const bundlerClient = createClient({
         transport: http(`https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`),
-        chain: polygonMumbai
+        chain: chain
     })
     // @ts-ignore
         .extend(bundlerActions)
@@ -61,7 +61,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
     const paymasterClient = createPimlicoPaymasterClient({
         transport: http(`https://api.pimlico.io/v2/${chain}/rpc?apikey=${apiKey}`),
-        chain: polygonMumbai
+        chain: chain
     })
 
     console.log("Public Client", publicClient, paymasterClient);
@@ -121,7 +121,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
         const bundlerClient = createClient({
             transport: http(`https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`),
-            chain: baseGoerli
+            chain
         })
             .extend(bundlerActions)
             .extend(pimlicoBundlerActions)
@@ -129,7 +129,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
         const paymasterClient = createClient({
             transport: http(`https://api.pimlico.io/v2/${chain}/rpc?apikey=${apiKey}`),
-            chain: polygonMumbai
+            chain
         }).extend(pimlicoPaymasterActions);
 
         function estimateGasResponse (userOp: UserOperation) {
@@ -198,7 +198,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
         const smartAccountClient = createSmartAccountClient({
             account: res,
-            chain: polygonMumbai,
+            chain: chain,
             transport: http(
                 `https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`,
             ),
@@ -207,7 +207,7 @@ const SmartAccountContextProvider = ({ children }: any) => {
 
         const baseAccountClient = createSmartAccountClient({
             account: res,
-            chain: polygonMumbai,
+            chain: baseGoerli,
             transport: http(
                 `https://api.pimlico.io/v1/${chain}/rpc?apikey=${apiKey}`,
             ),

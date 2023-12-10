@@ -1,17 +1,17 @@
-import { Mumbai, Chain, BaseGoerli , MantleTestnet} from '@thirdweb-dev/chains'
-// your token bound factory address
+import { Mumbai, Chain, BaseGoerli , MantleTestnet , PolygonZkevmTestnet , X1Testnet , CeloAlfajoresTestnet} from '@thirdweb-dev/chains';
+import { celoAlfajores } from 'viem/chains';
 // registery
 export const factoryAddress: string = '0x02101dfB77FDE026414827Fdc604ddAF224F0921'
 // TBA
-export const implementation: string = '0xB983F7e345Fe5493d8ABb63aE1aB52ec372b4f19'
+export const implementation: string = '0xB983F7e345Fe5493d8ABb63aE1aB52ec372b4f19';
 
 // Your thirdweb api key - you can get one at https://thirdweb.com/dashboard/api-keys
 export const TWApiKey: string = process.env.NEXT_PUBLIC_APP_TEMPLATE_CLIENT_ID || ''
 
 export const activeChain: Chain = Mumbai;
 
-export const loyaltyCardAddress: string = '0xE1822311D285d78EE98f5bD0f2edcF56fb7F1D29'
-export const addidas: string = '0x75DE6d2dE507a8572413cfBa2cD470418eF8c162'
+export const loyaltyCardAddress: string = '0x25CB5C350bD3062bEaE7458805Fb069200e37fD5'
+export const addidas: string = '0xBd491b4321DbE318522Ab3266590883c9F055200'
 export const tokenAddress: string = '0x006eF094e2DF803074Ef7Bce35994771a87a6fca'
 
 export const getaddresses: Record<number, Record<string, string>> = {
@@ -59,6 +59,9 @@ export const getaddresses: Record<number, Record<string, string>> = {
         addidas: "",
         implementation: "0xdf366B8FB6553E6F5826Ee6195cb9330A34442c1",
         factoryAddress: "0x02101dfB77FDE026414827Fdc604ddAF224F0921"
+    },
+    44787: {
+        addidas: "0x0439427C42a099E7E362D86e2Bbe1eA27300f6Cb",
     }
 };
 

@@ -230,7 +230,7 @@ const Home: NextPage = () => {
     <Container maxWidth="lg">
       {address ? (
         <div className={styles.container}>
-          <h1>Smart NFTs</h1>
+          <h1>SmartXNFTs</h1>
           <p>
             Browse the NFTs inside your personal wallet, select one to connect a
             token bound smart wallet & view it&apos;s balance.

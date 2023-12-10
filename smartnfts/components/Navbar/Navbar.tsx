@@ -31,7 +31,7 @@ export function Navbar() {
 
           <div className={styles.navMiddle}>
             <Link href="/" className={styles.link}>
-              Smart NFTs
+              SmartXNFTs
             </Link>
           </div>
         </div>
