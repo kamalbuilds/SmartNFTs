@@ -39,7 +39,7 @@ export const getaddresses: Record<number, Record<string, string>> = {
     1442: {
         factoryAddress: '0x5c729acd895eaa2b6a415219af6fb49b2ff7f5c3',
         implementation: '0xbEA03c2A49aE2D9671900efeFdC604304f5CA957',
-        addidas: '0x18F5c6D3F317AA621b32D190c27e32A52609a4E9'
+        addidas: ''
     },
     // sepolia
     534351: {

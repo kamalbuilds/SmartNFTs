@@ -2,6 +2,8 @@ import {
   MediaRenderer,
   ThirdwebNftMedia,
   useAddress,
+  useContract,
+  useNFTBalance,
   useWallet,
 } from "@thirdweb-dev/react";
 import React, { useEffect, useState } from "react";
@@ -32,6 +34,7 @@ export default function TokenPage({ nft, contractMetadata }: Props) {
   const { selectedChain } = useContext(ChainContext);
   const activeChain = selectedChain;
   const addidasaddres = getaddresses[activeChain.chainId]?.addidas;
+  const loyaltyaddres = getaddresses[activeChain.chainId]?.loyaltyCardAddress;
   const [smartWalletAddress, setSmartWalletAddress] = useState<string | null>(
     null
   );
@@ -81,6 +84,8 @@ export default function TokenPage({ nft, contractMetadata }: Props) {
     };
     createSmartWallet(nft);
   }, [nft, address, wallet]);
+  // const { contract, isLoading } = useContract'("0xE1822311D285d78EE98f5bD0f2edcF56fb7F1D29");
+  // const { data: ownerBalance, isLoading, error } = useNFTBalance(contract, "0x0439427C42a099E7E362D86e2Bbe1eA27300f6Cb");
 
 
   return (

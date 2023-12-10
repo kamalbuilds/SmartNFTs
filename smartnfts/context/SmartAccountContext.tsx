@@ -16,30 +16,6 @@ import { createPimlicoPaymasterClient } from "permissionless/clients/pimlico";
 
 export const SmartAccountContext = createContext({})
 
-// const adjustVInSignature = (
-//     signingMethod: "eth_sign" | "eth_signTypedData",
-//     signature: string
-// ): Hex => {
-//     const ETHEREUM_V_VALUES = [0, 1, 27, 28]
-//     const MIN_VALID_V_VALUE_FOR_SAFE_ECDSA = 27
-//     let signatureV = parseInt(signature.slice(-2), 16)
-//     if (!ETHEREUM_V_VALUES.includes(signatureV)) {
-//         throw new Error("Invalid signature")
-//     }
-//     if (signingMethod === "eth_sign") {
-//         if (signatureV < MIN_VALID_V_VALUE_FOR_SAFE_ECDSA) {
-//             signatureV += MIN_VALID_V_VALUE_FOR_SAFE_ECDSA
-//         }
-//         signatureV += 4
-//     }
-//     if (signingMethod === "eth_signTypedData") {
-//         if (signatureV < MIN_VALID_V_VALUE_FOR_SAFE_ECDSA) {
-//             signatureV += MIN_VALID_V_VALUE_FOR_SAFE_ECDSA
-//         }
-//     }
-//     return (signature.slice(0, -2) + signatureV.toString(16)) as Hex
-// }
-
 function correctHexString(payloadValue: string): string {
     if(payloadValue.indexOf('0x0') > -1 && payloadValue.length > 3) payloadValue = payloadValue.replace('0x0','0x')
     return payloadValue

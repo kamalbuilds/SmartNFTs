@@ -5,6 +5,7 @@ import InteractionBuilder from './interactionBuilderExample.js';
 
 (
     async () => {
+        // routerv5
         const mySmartContract = '0x11111112542d85b3ef69ae05771c2dccff4faa26'
         let interactionBuilder = new InteractionBuilder();
         let postInteraction = interactionBuilder.encodeBaseTokenBaseAmount(

@@ -21,11 +21,11 @@ import {
 
 
     // let infuraKey = "...";
-    let inchDevApiKey = "...";
+    let inchDevApiKey = process.env.INCH_DEV_API_KEY;
     const web3 = new Web3('https://cloudflare-eth.com/');
     const connector = new PrivateKeyProviderConnector("6cf3b26e7fdb9d7f3564d0d44f69c5c65c2a2f7bf48d852c2ea8512b5bcdaad5", web3); //it's usually best not to store the private key in the code as plain text, encrypting/decrypting it is a good practice
     const walletAddress = "0x05f2a859c61CE549d5DCBAA0e61844bD3276d4fd" // the public address associated with your private key
-    const chainId = 1; // suggested, or use your own number
+    const chainId = 137; 
     const contractAddress = limitOrderProtocolAddresses[chainId];
     const seriesContractAddress = seriesNonceManagerContractAddresses[chainId];
 
@@ -100,8 +100,8 @@ export default class Limits {
     }
 
     /*
-        * The following code is for placing the order with a call to the 1inch API
-        * this can be modified to take in the data, for now the data is hardcoded above
+        placing the order with a call to the 1inch API
+        * this can be made dynamic
         @param limitOrderData: untyped data of the limit order (all are strings)
         @param limitOrderSignature: signature of the limit order
         @param limitOrderHash: hash of the limit order

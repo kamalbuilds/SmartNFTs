@@ -176,7 +176,7 @@ const Swap = () => {
         <div className='p-4'>
             Swap Component
             <button onClick={checkAllowanceandApprove} className='p-4 hover:cursor-pointer border-purple-800'>Check Allowance</button>
-            <button onClick={handleSwap} className='p-4 hover:cursor-pointer border-purple-800'>Perform Swap</button>
+            <button onClick={handleSwap} className='p-4 hover:cursor-pointer border-purple-800'>Perform 1inch Swap</button>
         </div>
     );
 };

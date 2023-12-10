@@ -70,10 +70,11 @@ Account - https://sepolia.scrollscan.com/address/0xcb28933eed27d02ab86f666681501
 
 TBA - https://sepolia.scrollscan.com/address/0xa0c5d2d665869641e86c3d5fe3c9db4fff18f67b
 
-## OKX
-    
+## OKX X1 Chain 
 
-Registery - 
+ERC6551Account - https://www.oklink.com/x1-test/tx/0x435fcd979b46de33934839df1bf0d72ec61d7580cfb636d8aeecd4cdb0735841
+ERC6551REGISTRY - https://www.oklink.com/x1-test/tx/0x5F3eC562AD05A1395b43Fbf0098bB34ada4846c0
+TBA - https://www.oklink.com/x1-test/address/0x9276A0ea8897A25c2f59705F6A7da9cAcC320b47
 
 
 ## AA related
