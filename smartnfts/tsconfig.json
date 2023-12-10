@@ -13,9 +13,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
-    "typeRoots": ["./node_modules/@types"]
+    "incremental": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "scripts/nftData.mjs"],
-  "exclude": ["node_modules","node_modules/permissionless"]
+  "exclude": ["node_modules"]
 }
