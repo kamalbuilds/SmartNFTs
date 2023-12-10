@@ -38,6 +38,8 @@ Authorised Indian citizens to buy the NFTs
 
 6. Deploy on Scroll, Mantle , Celo and PolygonZKevm- Defi App , Arbitrium , X1 OKX
 
+EntryPoint - 0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789
+
 ## Mantle
 ERC6551Registery - https://explorer.testnet.mantle.xyz/address/0xc220Fe2cAFfcAF2c333E6Ba5C12E03B28D2fe6f6/contracts#address-tabs
 
@@ -56,6 +58,7 @@ Account - https://testnet-zkevm.polygonscan.com/address/0x611c9D2e67BCA09f4208b7
 TBA- https://thirdweb.com/polygon-zkevm-testnet/0xbEA03c2A49aE2D9671900efeFdC604304f5CA957
 
 ## Base
+
 Gold Earings https://base-goerli.blockscout.com/address/0x75DE6d2dE507a8572413cfBa2cD470418eF8c162
 
 TBA https://base-goerli.blockscout.com/address/0x8d72887163f8bD8A65649Ef4af37dcc21500e5A1
@@ -68,7 +71,15 @@ Account - https://sepolia.scrollscan.com/address/0xcb28933eed27d02ab86f666681501
 
 TBA - https://sepolia.scrollscan.com/address/0xa0c5d2d665869641e86c3d5fe3c9db4fff18f67b
 
+## Arbitrium 
 
+
+
+## OKX X1 Chain 
+
+ERC6551Account - https://www.oklink.com/x1-test/tx/0x435fcd979b46de33934839df1bf0d72ec61d7580cfb636d8aeecd4cdb0735841
+ERC6551REGISTRY - https://www.oklink.com/x1-test/tx/0x5F3eC562AD05A1395b43Fbf0098bB34ada4846c0
+TBA - https://www.oklink.com/x1-test/address/0x9276A0ea8897A25c2f59705F6A7da9cAcC320b47
 ## AA related
 
 1. Best use of Account Abstraction and Base Paymaster ⸺ $4,000

@@ -118,7 +118,7 @@ const UserAssets = ({
 
                         </div>
 
-                        {protocol != 'erc20' && <div onClick={getAssetDetails} className='border border-gray-400 px-4 py-2 rounded-lg my-4 w-fit'>Get Asset Details</div>
+                        {protocol != 'erc20' && <div onClick={getAssetDetails} className='border border-gray-400 px-4 py-2 rounded-lg my-4 w-fit hover:cursor-pointer'>Get Asset Details</div>
                         }
                         <div className='flex flex-row gap-4 flex-wrap'>
                             {activeAssets && activeAssets?.map((activeAsset: any) => {

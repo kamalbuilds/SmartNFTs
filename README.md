@@ -1,21 +1,3 @@
-# SmartNFTs - Shop Smart with Smart NFTs with Best UX
-
-
-Unique Brand Profiles for every user
-
-Gasless Transactions, also known as meta-transactions, are transactions that have the gas fee paid for by a third party instead of the transaction sender.
-
-Typically, this means the Brands cover the gas costs of their users' transactions, providing a more seamless user experience.
-
-This works by having the user sign a message that is then sent to a relayer, which pays the gas fee and forwards the transaction to the blockchain.
-
-![Logo](<smartnfts/public/WhatsApp Image 2023-12-08 at 17.45.48_addb1969.jpg>)
-
-![Alt text](image.png)
-
-Royalties to the seller     
-![nike royalties](image-1.png)
-
 # TBA with Personalised SmartNFTs for Users.
 
 Own Brand NFTs which contain your assets along with a Loyalty NFT. 
@@ -51,6 +33,8 @@ For querying ERC-6551 related things
 
 4. Chainlink Automation
 
+We are using Chainlink CCIP to get the product NFTs on any chain the user wants
+
 5. Ethereum Foundation - Best use of Anon Aadhaar SDK   
 Authorised Indian citizens to buy the NFTs
 
@@ -72,6 +56,26 @@ Registery - https://testnet-zkevm.polygonscan.com/address/0x5c729acd895eaa2b6a41
 Account - https://testnet-zkevm.polygonscan.com/address/0x611c9D2e67BCA09f4208b7b6ce27fAcBc4A5eE6D
 
 TBA- https://thirdweb.com/polygon-zkevm-testnet/0xbEA03c2A49aE2D9671900efeFdC604304f5CA957
+
+## Base
+Gold Earings https://base-goerli.blockscout.com/address/0x75DE6d2dE507a8572413cfBa2cD470418eF8c162
+
+TBA https://base-goerli.blockscout.com/address/0x8d72887163f8bD8A65649Ef4af37dcc21500e5A1
+
+## Scroll 
+
+Registery - https://sepolia.scrollscan.com/address/0xdf366b8fb6553e6f5826ee6195cb9330a34442c1
+
+Account - https://sepolia.scrollscan.com/address/0xcb28933eed27d02ab86f66668150187807aa47e8
+
+TBA - https://sepolia.scrollscan.com/address/0xa0c5d2d665869641e86c3d5fe3c9db4fff18f67b
+
+## OKX
+    
+
+Registery - 
+
+
 ## AA related
 
 1. Best use of Account Abstraction and Base Paymaster ⸺ $4,000

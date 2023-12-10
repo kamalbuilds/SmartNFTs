@@ -173,10 +173,10 @@ const Swap = () => {
     }
       
     return (
-        <div>
+        <div className='p-4'>
             Swap Component
-            <button onClick={checkAllowanceandApprove}>Check Allowance</button>
-            <button onClick={handleSwap}>Perform Swap</button>
+            <button onClick={checkAllowanceandApprove} className='p-4 hover:cursor-pointer border-purple-800'>Check Allowance</button>
+            <button onClick={handleSwap} className='p-4 hover:cursor-pointer border-purple-800'>Perform Swap</button>
         </div>
     );
 };

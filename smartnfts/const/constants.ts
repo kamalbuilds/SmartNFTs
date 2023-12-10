@@ -46,6 +46,12 @@ export const getaddresses: Record<number, Record<string, string>> = {
         factoryAddress: '0xdf366B8FB6553E6F5826Ee6195cb9330A34442c1',
         implementation: '0xa0c5d2d665869641e86c3d5fe3c9db4fff18f67b',
         addidas: ''
+    },
+    // x1
+    195: {
+        addidas: "0xd0206794554007F20F285f18107cFf696c9FC2c1",
+        factoryAddress: "0xa0C5D2d665869641E86c3d5fE3c9dB4FFF18F67b",
+        implementation: "0x9276A0ea8897A25c2f59705F6A7da9cAcC320b47",
     }
 };
 
