@@ -25,23 +25,19 @@ Prime Future usecase :- Building onchain quest like buy 3 products in a week , a
 
 Integrations aimed
 
-1. 1inch Fusion Swaps via Token Bound Accounts
+1. Chainlink Automation and CCIP
+ We are using Chainlink CCIP to get the product NFTs on any chain the user wants.
+
+2. 1inch Fusion Swaps via Token Bound Accounts
 
 Execute Swaps using Fusion SDK and API and then deposit in UniswapV3 Pools.
 
-2. Airstack 
+3. Airstack 
 For querying ERC-6551 related things
 
-3. Push for Chat 
+4. Push for Chat 
 
-3. XDC and Submit to Alliance for Best Startup Idea
-
-4. Chainlink Automation and CCIP
-
-We are using Chainlink CCIP to get the product NFTs on any chain the user wants.
-
-5. Ethereum Foundation - Best use of Anon Aadhaar SDK   
-Authorised Indian citizens to buy the NFTs
+5. XDC and Submit to Alliance for Best Startup Idea
 
 6. Project live on Scroll, Mantle , Celo , PolygonZKevm , Arbitrium and X1 OKX Testnet Chain
    
