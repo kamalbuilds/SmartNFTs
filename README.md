@@ -1,7 +1,10 @@
-# TBA with Personalised SmartNFTs for Users.
+# SmartNFTs
 
-Own Brand NFTs which contain your assets along with a Loyalty NFT. 
-Take action like Investing in Pools. Connect to Ethereum. All as your NFT.
+Lets Users bring life to their Brand NFTs which contain your assets along with a Dynamic Loyalty NFT which increases its level  using chainlink Automation and CCIP as the user purchases more product of that brand. 
+
+Users NFT now has the power to take action like Investing in Uniswap Pools.
+
+🚀 Connect to 9 chains that we support seamlessly with the best UX.
 
 TBA - https://mumbai.polygonscan.com/address/0xb983f7e345fe5493d8abb63ae1ab52ec372b4f19
 
@@ -18,6 +21,8 @@ Brands can issue NFTs on their items with a QR Code and now users would be able 
 
 Our main usecase- Easier onboarding for new users. Imagine buying some merch from a shop and getting an associated NFT with it. Any future rewards or benefits can be airdropped straight into the wallet associated with that NFT. To self-custody, user can just move the top-level NFT from the merch shop's website into a wallet under their control, and all contained assets move with it.
 
+Prime Future usecase :- Building onchain quest like buy 3 products in a week , and when user completes a quest his loyalty nft points get automatically updated using chainlink automation.
+
 Integrations aimed
 
 1. 1inch Fusion Swaps via Token Bound Accounts
@@ -31,15 +36,15 @@ For querying ERC-6551 related things
 
 3. XDC and Submit to Alliance for Best Startup Idea
 
-4. Chainlink Automation
+4. Chainlink Automation and CCIP
 
-We are using Chainlink CCIP to get the product NFTs on any chain the user wants
+We are using Chainlink CCIP to get the product NFTs on any chain the user wants.
 
 5. Ethereum Foundation - Best use of Anon Aadhaar SDK   
 Authorised Indian citizens to buy the NFTs
 
-6. Deploy on Scroll, Mantle , Celo and PolygonZKevm- Defi App , Arbitrium , X1 OKX
-
+6. Project live on Scroll, Mantle , Celo , PolygonZKevm , Arbitrium and X1 OKX Testnet Chain
+   
 ## Mantle
 ERC6551Registery - https://explorer.testnet.mantle.xyz/address/0xc220Fe2cAFfcAF2c333E6Ba5C12E03B28D2fe6f6/contracts#address-tabs
 
@@ -98,5 +103,3 @@ npx prisma db push
 mongodb+srv://kamal:mMtmf04G6O1DHNjZ@cluster0.btoeo63.mongodb.net/qrproductnft?retryWrites=true&w=majority
 
 For testing the qr code claiming nfts on store go to - /claim?id=clpo508e80000iw3dysdf4dbj
-
-Building onchain quest like buy 3 products in a week , and when user completes a quest his loyalty nft points get automatically updated using chainlink automation.
